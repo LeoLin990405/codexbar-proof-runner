@@ -1,0 +1,11 @@
+state=recovery
+steps=[["snapshot.updatedAtRelative": "just now", "error": "nil", "snapshotPresent": true, "mode": "success", "snapshot.primaryUsedPercent": 42.0], ["mode": "fail", "snapshotPresent": true, "snapshot.primaryUsedPercent": 42.0, "snapshot.updatedAtRelative": "1 minute ago", "error": "Usage request failed (HTTP 500): fixture endpoint stopped responding."], ["snapshot.primaryUsedPercent": 42.0, "mode": "success", "error": "nil", "snapshotPresent": true, "snapshot.updatedAtRelative": "just now"]]
+snapshot.present=true snapshot.primaryUsedPercent=42.0 snapshot.updatedAtRelative=just now
+error.text=nil
+card.usageState=current card.isStale=false card.showsUsageRows=true
+card.errorText=
+card.lastKnownText=
+card.placeholderText=nil
+menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+app.version=0.80.1 app.gitCommit=2656f6fac

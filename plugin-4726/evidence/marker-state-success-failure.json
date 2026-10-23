@@ -1,0 +1,63 @@
+{
+  "app.build" : "174",
+  "app.bundleIdentifier" : "com.steipete.codexbar.debug",
+  "app.bundlePath" : "\/Users\/runner\/work\/codexbar-proof-runner\/codexbar-proof-runner\/CodexBar.app",
+  "app.gitCommit" : "2656f6fac",
+  "app.version" : "0.80.1",
+  "card.errorText" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+  "card.fingerprint" : "en|lastKnown|814429577.755928|0|Usage request failed (HTTP 500): fixture endpoint stopped responding.|Showing last-known usage captured 1 minute ago.",
+  "card.isRefreshing" : false,
+  "card.isStale" : true,
+  "card.lastKnownText" : "Showing last-known usage captured 1 minute ago.",
+  "card.placeholderText" : "nil",
+  "card.showsUsageRows" : true,
+  "card.usageState" : "lastKnown",
+  "error.text" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+  "lastKnownUsagePresentation.message" : "Showing last-known usage captured 1 minute ago.",
+  "menu.userPluginsForMenu.nonMerged" : [
+    "fixture-stale-proof"
+  ],
+  "plugin.config" : {
+    "BASE_URL" : "http:\/\/127.0.0.1:8765"
+  },
+  "plugin.file" : "fixture-stale-proof.js",
+  "plugin.id" : "fixture-stale-proof",
+  "plugin.name" : "Fixture Usage",
+  "plugin.topLevel" : true,
+  "registry.pluginIDs" : [
+    "fixture-stale-proof"
+  ],
+  "scenario" : "user-plugin-success-then-refresh-failure-retained-usage",
+  "settings.isPluginEnabled" : true,
+  "settings.refreshFrequency" : "manual",
+  "settings.selectedMenuProvider" : "fixture-stale-proof",
+  "snapshot.present" : true,
+  "snapshot.primaryUsedPercent" : 42,
+  "snapshot.primaryWindowMinutes" : 300,
+  "snapshot.secondaryPresent" : false,
+  "snapshot.updatedAt" : "2026-10-23T06:26:17Z",
+  "snapshot.updatedAtRelative" : "1 minute ago",
+  "state" : "success-failure",
+  "status" : "menu-open-requested",
+  "statusItem.debug" : "statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))",
+  "steps" : [
+    {
+      "error" : "nil",
+      "mode" : "success",
+      "snapshot.primaryUsedPercent" : 42,
+      "snapshot.updatedAtRelative" : "just now",
+      "snapshotPresent" : true
+    },
+    {
+      "error" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+      "mode" : "fail",
+      "snapshot.primaryUsedPercent" : 42,
+      "snapshot.updatedAtRelative" : "1 minute ago",
+      "snapshotPresent" : true
+    }
+  ],
+  "store.errorPresent" : true,
+  "store.isRefreshing" : false,
+  "store.snapshotPresent" : true,
+  "timestamp" : "2026-10-23T06:27:34Z"
+}

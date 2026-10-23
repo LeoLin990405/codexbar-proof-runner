@@ -1,0 +1,21 @@
+[proof-harness] harness enabled, directory=/tmp/codexbar-proof state=failure-only
+[proof-harness] plugin registered: name=Fixture Usage id=fixture-stale-proof topLevel=true file=fixture-stale-proof.js
+[proof-harness] plugin approval recorded origins=["http://127.0.0.1:8765"] settings=["BASE_URL"]
+[proof-harness] production refresh step mode=fail
+[proof-harness] step mode=fail snapshotPresent=false usedPercent=-1.0 error=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] state=failure-only
+[proof-harness] steps=[["error": "Usage request failed (HTTP 500): fixture endpoint stopped responding.", "snapshotPresent": false, "snapshot.primaryUsedPercent": -1, "mode": "fail", "snapshot.updatedAtRelative": "nil"]]
+[proof-harness] snapshot.present=false snapshot.primaryUsedPercent=-1.0 snapshot.updatedAtRelative=nil
+[proof-harness] error.text=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] card.usageState=none card.isStale=false card.showsUsageRows=false
+[proof-harness] card.errorText=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] card.lastKnownText=
+[proof-harness] card.placeholderText=nil
+[proof-harness] menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+[proof-harness] statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+[proof-harness] app.version=0.80.1 app.gitCommit=2656f6fac
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-state-failure-only.json
+[proof-harness] opening the real status-item menu
+Sampling process 13186 for 3 seconds with 1 millisecond of run time between samples
+Sampling completed, processing symbols...
+Sample analysis of process 13186 written to file /Users/runner/Library/Logs/CodexBar/hang-sample-2026-10-23T062751.txt

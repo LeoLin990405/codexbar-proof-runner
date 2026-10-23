@@ -1,0 +1,21 @@
+[proof-harness] harness enabled, directory=/tmp/codexbar-proof state=success
+[proof-harness] plugin registered: name=Fixture Usage id=fixture-stale-proof topLevel=true file=fixture-stale-proof.js
+[proof-harness] plugin approval recorded origins=["http://127.0.0.1:8765"] settings=["BASE_URL"]
+[proof-harness] production refresh step mode=success
+[proof-harness] step mode=success snapshotPresent=true usedPercent=42.0 error=nil
+[proof-harness] state=success
+[proof-harness] steps=[["snapshot.updatedAtRelative": "just now", "error": "nil", "snapshot.primaryUsedPercent": 42.0, "mode": "success", "snapshotPresent": true]]
+[proof-harness] snapshot.present=true snapshot.primaryUsedPercent=42.0 snapshot.updatedAtRelative=just now
+[proof-harness] error.text=nil
+[proof-harness] card.usageState=current card.isStale=false card.showsUsageRows=true
+[proof-harness] card.errorText=
+[proof-harness] card.lastKnownText=
+[proof-harness] card.placeholderText=nil
+[proof-harness] menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+[proof-harness] statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+[proof-harness] app.version=0.80.1 app.gitCommit=2656f6fac
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-state-success.json
+[proof-harness] opening the real status-item menu
+Sampling process 9759 for 3 seconds with 1 millisecond of run time between samples
+Sampling completed, processing symbols...
+Sample analysis of process 9759 written to file /Users/runner/Library/Logs/CodexBar/hang-sample-2026-10-23T062605.txt

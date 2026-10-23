@@ -1,0 +1,6 @@
+owner=CodexBar number=53 layer=101 alpha=1.0 onscreen=true bounds={
+    Height = 243;
+    Width = 310;
+    X = 708;
+    Y = 31;
+}

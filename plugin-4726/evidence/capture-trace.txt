@@ -1,0 +1,525 @@
+=================== state=success ===================
+06:25:56 launch state=success pid=9759
+=== success marker ===
+{
+  "app.build" : "174",
+  "app.bundleIdentifier" : "com.steipete.codexbar.debug",
+  "app.bundlePath" : "\/Users\/runner\/work\/codexbar-proof-runner\/codexbar-proof-runner\/CodexBar.app",
+  "app.gitCommit" : "2656f6fac",
+  "app.version" : "0.80.1",
+  "card.errorText" : "",
+  "card.fingerprint" : "en|current|814429561.250673|0||",
+  "card.isRefreshing" : false,
+  "card.isStale" : false,
+  "card.lastKnownText" : "",
+  "card.placeholderText" : "nil",
+  "card.showsUsageRows" : true,
+  "card.usageState" : "current",
+  "error.text" : "nil",
+  "lastKnownUsagePresentation.message" : "Showing last-known usage captured just now.",
+  "menu.userPluginsForMenu.nonMerged" : [
+    "fixture-stale-proof"
+  ],
+  "plugin.config" : {
+    "BASE_URL" : "http:\/\/127.0.0.1:8765"
+  },
+  "plugin.file" : "fixture-stale-proof.js",
+  "plugin.id" : "fixture-stale-proof",
+  "plugin.name" : "Fixture Usage",
+  "plugin.topLevel" : true,
+  "registry.pluginIDs" : [
+    "fixture-stale-proof"
+  ],
+  "scenario" : "user-plugin-success-then-refresh-failure-retained-usage",
+  "settings.isPluginEnabled" : true,
+  "settings.refreshFrequency" : "manual",
+  "settings.selectedMenuProvider" : "fixture-stale-proof",
+  "snapshot.present" : true,
+  "snapshot.primaryUsedPercent" : 42,
+  "snapshot.primaryWindowMinutes" : 300,
+  "snapshot.secondaryPresent" : false,
+  "snapshot.updatedAt" : "2026-10-23T06:26:01Z",
+  "snapshot.updatedAtRelative" : "just now",
+  "state" : "success",
+  "status" : "menu-open-requested",
+  "statusItem.debug" : "statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))",
+  "steps" : [
+    {
+      "error" : "nil",
+      "mode" : "success",
+      "snapshot.primaryUsedPercent" : 42,
+      "snapshot.updatedAtRelative" : "just now",
+      "snapshotPresent" : true
+    }
+  ],
+  "store.errorPresent" : false,
+  "store.isRefreshing" : false,
+  "store.snapshotPresent" : true,
+  "timestamp" : "2026-10-23T06:26:02Z"
+}owner=CodexBar number=32 layer=101 alpha=1.0 onscreen=true bounds={
+    Height = 243;
+    Width = 310;
+    X = 708;
+    Y = 31;
+}
+owner=CodexBar number=32 layer=101 alpha=1.0 onscreen=true bounds={
+    Height = 243;
+    Width = 310;
+    X = 708;
+    Y = 31;
+}
+=== success harness runtime evidence (redacted) ===
+harness enabled, directory=/tmp/codexbar-proof state=success
+plugin registered: name=Fixture Usage id=fixture-stale-proof topLevel=true file=fixture-stale-proof.js
+plugin approval recorded origins=["http://127.0.0.1:8765"] settings=["BASE_URL"]
+production refresh step mode=success
+step mode=success snapshotPresent=true usedPercent=42.0 error=nil
+state=success
+steps=[["snapshot.updatedAtRelative": "just now", "error": "nil", "snapshot.primaryUsedPercent": 42.0, "mode": "success", "snapshotPresent": true]]
+snapshot.present=true snapshot.primaryUsedPercent=42.0 snapshot.updatedAtRelative=just now
+error.text=nil
+card.usageState=current card.isStale=false card.showsUsageRows=true
+card.errorText=
+card.lastKnownText=
+card.placeholderText=nil
+menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+app.version=0.80.1 app.gitCommit=2656f6fac
+wrote marker /tmp/codexbar-proof/marker-state-success.json
+opening the real status-item menu
+=== success app stdout tail ===
+[proof-harness] plugin registered: name=Fixture Usage id=fixture-stale-proof topLevel=true file=fixture-stale-proof.js
+[proof-harness] plugin approval recorded origins=["http://127.0.0.1:8765"] settings=["BASE_URL"]
+[proof-harness] production refresh step mode=success
+[proof-harness] step mode=success snapshotPresent=true usedPercent=42.0 error=nil
+[proof-harness] state=success
+[proof-harness] steps=[["snapshot.updatedAtRelative": "just now", "error": "nil", "snapshot.primaryUsedPercent": 42.0, "mode": "success", "snapshotPresent": true]]
+[proof-harness] snapshot.present=true snapshot.primaryUsedPercent=42.0 snapshot.updatedAtRelative=just now
+[proof-harness] error.text=nil
+[proof-harness] card.usageState=current card.isStale=false card.showsUsageRows=true
+[proof-harness] card.errorText=
+[proof-harness] card.lastKnownText=
+[proof-harness] card.placeholderText=nil
+[proof-harness] menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+[proof-harness] statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+[proof-harness] app.version=0.80.1 app.gitCommit=2656f6fac
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-state-success.json
+[proof-harness] opening the real status-item menu
+Sampling process 9759 for 3 seconds with 1 millisecond of run time between samples
+Sampling completed, processing symbols...
+Sample analysis of process 9759 written to file /Users/runner/Library/Logs/CodexBar/hang-sample-2026-10-23T062605.txt
+/Users/runner/work/_temp/32954026-c6ff-48bb-a919-91533e9894df.sh: line 87:  9759 Terminated: 15          "$APP/Contents/MacOS/CodexBar" > "$LOG" 2>&1
+=================== state=success-failure ===================
+06:26:15 launch state=success-failure pid=10352
+=== success-failure marker ===
+{
+  "app.build" : "174",
+  "app.bundleIdentifier" : "com.steipete.codexbar.debug",
+  "app.bundlePath" : "\/Users\/runner\/work\/codexbar-proof-runner\/codexbar-proof-runner\/CodexBar.app",
+  "app.gitCommit" : "2656f6fac",
+  "app.version" : "0.80.1",
+  "card.errorText" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+  "card.fingerprint" : "en|lastKnown|814429577.755928|0|Usage request failed (HTTP 500): fixture endpoint stopped responding.|Showing last-known usage captured 1 minute ago.",
+  "card.isRefreshing" : false,
+  "card.isStale" : true,
+  "card.lastKnownText" : "Showing last-known usage captured 1 minute ago.",
+  "card.placeholderText" : "nil",
+  "card.showsUsageRows" : true,
+  "card.usageState" : "lastKnown",
+  "error.text" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+  "lastKnownUsagePresentation.message" : "Showing last-known usage captured 1 minute ago.",
+  "menu.userPluginsForMenu.nonMerged" : [
+    "fixture-stale-proof"
+  ],
+  "plugin.config" : {
+    "BASE_URL" : "http:\/\/127.0.0.1:8765"
+  },
+  "plugin.file" : "fixture-stale-proof.js",
+  "plugin.id" : "fixture-stale-proof",
+  "plugin.name" : "Fixture Usage",
+  "plugin.topLevel" : true,
+  "registry.pluginIDs" : [
+    "fixture-stale-proof"
+  ],
+  "scenario" : "user-plugin-success-then-refresh-failure-retained-usage",
+  "settings.isPluginEnabled" : true,
+  "settings.refreshFrequency" : "manual",
+  "settings.selectedMenuProvider" : "fixture-stale-proof",
+  "snapshot.present" : true,
+  "snapshot.primaryUsedPercent" : 42,
+  "snapshot.primaryWindowMinutes" : 300,
+  "snapshot.secondaryPresent" : false,
+  "snapshot.updatedAt" : "2026-10-23T06:26:17Z",
+  "snapshot.updatedAtRelative" : "1 minute ago",
+  "state" : "success-failure",
+  "status" : "menu-open-requested",
+  "statusItem.debug" : "statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))",
+  "steps" : [
+    {
+      "error" : "nil",
+      "mode" : "success",
+      "snapshot.primaryUsedPercent" : 42,
+      "snapshot.updatedAtRelative" : "just now",
+      "snapshotPresent" : true
+    },
+    {
+      "error" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+      "mode" : "fail",
+      "snapshot.primaryUsedPercent" : 42,
+      "snapshot.updatedAtRelative" : "1 minute ago",
+      "snapshotPresent" : true
+    }
+  ],
+  "store.errorPresent" : true,
+  "store.isRefreshing" : false,
+  "store.snapshotPresent" : true,
+  "timestamp" : "2026-10-23T06:27:34Z"
+}owner=CodexBar number=41 layer=101 alpha=1.0 onscreen=true bounds={
+    Height = 293;
+    Width = 310;
+    X = 708;
+    Y = 31;
+}
+owner=CodexBar number=41 layer=101 alpha=1.0 onscreen=true bounds={
+    Height = 293;
+    Width = 310;
+    X = 708;
+    Y = 31;
+}
+=== success-failure harness runtime evidence (redacted) ===
+harness enabled, directory=/tmp/codexbar-proof state=success-failure
+plugin registered: name=Fixture Usage id=fixture-stale-proof topLevel=true file=fixture-stale-proof.js
+plugin approval recorded origins=["http://127.0.0.1:8765"] settings=["BASE_URL"]
+production refresh step mode=success
+step mode=success snapshotPresent=true usedPercent=42.0 error=nil
+waiting 70s before the failing refresh
+production refresh step mode=fail
+step mode=fail snapshotPresent=true usedPercent=42.0 error=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+state=success-failure
+steps=[["snapshot.updatedAtRelative": "just now", "error": "nil", "mode": "success", "snapshotPresent": true, "snapshot.primaryUsedPercent": 42.0], ["snapshot.primaryUsedPercent": 42.0, "error": "Usage request failed (HTTP 500): fixture endpoint stopped responding.", "mode": "fail", "snapshot.updatedAtRelative": "1 minute ago", "snapshotPresent": true]]
+snapshot.present=true snapshot.primaryUsedPercent=42.0 snapshot.updatedAtRelative=1 minute ago
+error.text=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+card.usageState=lastKnown card.isStale=true card.showsUsageRows=true
+card.errorText=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+card.lastKnownText=Showing last-known usage captured 1 minute ago.
+card.placeholderText=nil
+menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+app.version=0.80.1 app.gitCommit=2656f6fac
+wrote marker /tmp/codexbar-proof/marker-state-success-failure.json
+opening the real status-item menu
+=== success-failure app stdout tail ===
+[proof-harness] plugin approval recorded origins=["http://127.0.0.1:8765"] settings=["BASE_URL"]
+[proof-harness] production refresh step mode=success
+[proof-harness] step mode=success snapshotPresent=true usedPercent=42.0 error=nil
+[proof-harness] waiting 70s before the failing refresh
+[proof-harness] production refresh step mode=fail
+[proof-harness] step mode=fail snapshotPresent=true usedPercent=42.0 error=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] state=success-failure
+[proof-harness] steps=[["snapshot.updatedAtRelative": "just now", "error": "nil", "mode": "success", "snapshotPresent": true, "snapshot.primaryUsedPercent": 42.0], ["snapshot.primaryUsedPercent": 42.0, "error": "Usage request failed (HTTP 500): fixture endpoint stopped responding.", "mode": "fail", "snapshot.updatedAtRelative": "1 minute ago", "snapshotPresent": true]]
+[proof-harness] snapshot.present=true snapshot.primaryUsedPercent=42.0 snapshot.updatedAtRelative=1 minute ago
+[proof-harness] error.text=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] card.usageState=lastKnown card.isStale=true card.showsUsageRows=true
+[proof-harness] card.errorText=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] card.lastKnownText=Showing last-known usage captured 1 minute ago.
+[proof-harness] card.placeholderText=nil
+[proof-harness] menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+[proof-harness] statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+[proof-harness] app.version=0.80.1 app.gitCommit=2656f6fac
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-state-success-failure.json
+[proof-harness] opening the real status-item menu
+Sampling process 10352 for 3 seconds with 1 millisecond of run time between samples
+/Users/runner/work/_temp/32954026-c6ff-48bb-a919-91533e9894df.sh: line 87: 10352 Terminated: 15          "$APP/Contents/MacOS/CodexBar" > "$LOG" 2>&1
+=================== state=failure-only ===================
+06:27:44 launch state=failure-only pid=13186
+=== failure-only marker ===
+{
+  "app.build" : "174",
+  "app.bundleIdentifier" : "com.steipete.codexbar.debug",
+  "app.bundlePath" : "\/Users\/runner\/work\/codexbar-proof-runner\/codexbar-proof-runner\/CodexBar.app",
+  "app.gitCommit" : "2656f6fac",
+  "app.version" : "0.80.1",
+  "card.errorText" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+  "card.fingerprint" : "en|none|none|0|Usage request failed (HTTP 500): fixture endpoint stopped responding.|",
+  "card.isRefreshing" : false,
+  "card.isStale" : false,
+  "card.lastKnownText" : "",
+  "card.placeholderText" : "nil",
+  "card.showsUsageRows" : false,
+  "card.usageState" : "none",
+  "error.text" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+  "lastKnownUsagePresentation.message" : "Showing last-known usage captured just now.",
+  "menu.userPluginsForMenu.nonMerged" : [
+    "fixture-stale-proof"
+  ],
+  "plugin.config" : {
+    "BASE_URL" : "http:\/\/127.0.0.1:8765"
+  },
+  "plugin.file" : "fixture-stale-proof.js",
+  "plugin.id" : "fixture-stale-proof",
+  "plugin.name" : "Fixture Usage",
+  "plugin.topLevel" : true,
+  "registry.pluginIDs" : [
+    "fixture-stale-proof"
+  ],
+  "scenario" : "user-plugin-success-then-refresh-failure-retained-usage",
+  "settings.isPluginEnabled" : true,
+  "settings.refreshFrequency" : "manual",
+  "settings.selectedMenuProvider" : "fixture-stale-proof",
+  "snapshot.present" : false,
+  "snapshot.primaryUsedPercent" : -1,
+  "snapshot.primaryWindowMinutes" : -1,
+  "snapshot.secondaryPresent" : false,
+  "snapshot.updatedAt" : "nil",
+  "snapshot.updatedAtRelative" : "nil",
+  "state" : "failure-only",
+  "status" : "menu-open-requested",
+  "statusItem.debug" : "statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))",
+  "steps" : [
+    {
+      "error" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+      "mode" : "fail",
+      "snapshot.primaryUsedPercent" : -1,
+      "snapshot.updatedAtRelative" : "nil",
+      "snapshotPresent" : false
+    }
+  ],
+  "store.errorPresent" : true,
+  "store.isRefreshing" : false,
+  "store.snapshotPresent" : false,
+  "timestamp" : "2026-10-23T06:27:48Z"
+}owner=CodexBar number=47 layer=101 alpha=1.0 onscreen=true bounds={
+    Height = 246;
+    Width = 310;
+    X = 708;
+    Y = 31;
+}
+owner=CodexBar number=47 layer=101 alpha=1.0 onscreen=true bounds={
+    Height = 246;
+    Width = 310;
+    X = 708;
+    Y = 31;
+}
+=== failure-only harness runtime evidence (redacted) ===
+harness enabled, directory=/tmp/codexbar-proof state=failure-only
+plugin registered: name=Fixture Usage id=fixture-stale-proof topLevel=true file=fixture-stale-proof.js
+plugin approval recorded origins=["http://127.0.0.1:8765"] settings=["BASE_URL"]
+production refresh step mode=fail
+step mode=fail snapshotPresent=false usedPercent=-1.0 error=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+state=failure-only
+steps=[["error": "Usage request failed (HTTP 500): fixture endpoint stopped responding.", "snapshotPresent": false, "snapshot.primaryUsedPercent": -1, "mode": "fail", "snapshot.updatedAtRelative": "nil"]]
+snapshot.present=false snapshot.primaryUsedPercent=-1.0 snapshot.updatedAtRelative=nil
+error.text=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+card.usageState=none card.isStale=false card.showsUsageRows=false
+card.errorText=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+card.lastKnownText=
+card.placeholderText=nil
+menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+app.version=0.80.1 app.gitCommit=2656f6fac
+wrote marker /tmp/codexbar-proof/marker-state-failure-only.json
+opening the real status-item menu
+=== failure-only app stdout tail ===
+[proof-harness] harness enabled, directory=/tmp/codexbar-proof state=failure-only
+[proof-harness] plugin registered: name=Fixture Usage id=fixture-stale-proof topLevel=true file=fixture-stale-proof.js
+[proof-harness] plugin approval recorded origins=["http://127.0.0.1:8765"] settings=["BASE_URL"]
+[proof-harness] production refresh step mode=fail
+[proof-harness] step mode=fail snapshotPresent=false usedPercent=-1.0 error=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] state=failure-only
+[proof-harness] steps=[["error": "Usage request failed (HTTP 500): fixture endpoint stopped responding.", "snapshotPresent": false, "snapshot.primaryUsedPercent": -1, "mode": "fail", "snapshot.updatedAtRelative": "nil"]]
+[proof-harness] snapshot.present=false snapshot.primaryUsedPercent=-1.0 snapshot.updatedAtRelative=nil
+[proof-harness] error.text=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] card.usageState=none card.isStale=false card.showsUsageRows=false
+[proof-harness] card.errorText=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] card.lastKnownText=
+[proof-harness] card.placeholderText=nil
+[proof-harness] menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+[proof-harness] statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+[proof-harness] app.version=0.80.1 app.gitCommit=2656f6fac
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-state-failure-only.json
+[proof-harness] opening the real status-item menu
+Sampling process 13186 for 3 seconds with 1 millisecond of run time between samples
+Sampling completed, processing symbols...
+/Users/runner/work/_temp/32954026-c6ff-48bb-a919-91533e9894df.sh: line 87: 13186 Terminated: 15          "$APP/Contents/MacOS/CodexBar" > "$LOG" 2>&1
+=================== state=recovery ===================
+06:27:57 launch state=recovery pid=13507
+=== recovery marker ===
+{
+  "app.build" : "174",
+  "app.bundleIdentifier" : "com.steipete.codexbar.debug",
+  "app.bundlePath" : "\/Users\/runner\/work\/codexbar-proof-runner\/codexbar-proof-runner\/CodexBar.app",
+  "app.gitCommit" : "2656f6fac",
+  "app.version" : "0.80.1",
+  "card.errorText" : "",
+  "card.fingerprint" : "en|current|814429758.621718|0||",
+  "card.isRefreshing" : false,
+  "card.isStale" : false,
+  "card.lastKnownText" : "",
+  "card.placeholderText" : "nil",
+  "card.showsUsageRows" : true,
+  "card.usageState" : "current",
+  "error.text" : "nil",
+  "lastKnownUsagePresentation.message" : "Showing last-known usage captured just now.",
+  "menu.userPluginsForMenu.nonMerged" : [
+    "fixture-stale-proof"
+  ],
+  "plugin.config" : {
+    "BASE_URL" : "http:\/\/127.0.0.1:8765"
+  },
+  "plugin.file" : "fixture-stale-proof.js",
+  "plugin.id" : "fixture-stale-proof",
+  "plugin.name" : "Fixture Usage",
+  "plugin.topLevel" : true,
+  "registry.pluginIDs" : [
+    "fixture-stale-proof"
+  ],
+  "scenario" : "user-plugin-success-then-refresh-failure-retained-usage",
+  "settings.isPluginEnabled" : true,
+  "settings.refreshFrequency" : "manual",
+  "settings.selectedMenuProvider" : "fixture-stale-proof",
+  "snapshot.present" : true,
+  "snapshot.primaryUsedPercent" : 42,
+  "snapshot.primaryWindowMinutes" : 300,
+  "snapshot.secondaryPresent" : false,
+  "snapshot.updatedAt" : "2026-10-23T06:29:18Z",
+  "snapshot.updatedAtRelative" : "just now",
+  "state" : "recovery",
+  "status" : "menu-open-requested",
+  "statusItem.debug" : "statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))",
+  "steps" : [
+    {
+      "error" : "nil",
+      "mode" : "success",
+      "snapshot.primaryUsedPercent" : 42,
+      "snapshot.updatedAtRelative" : "just now",
+      "snapshotPresent" : true
+    },
+    {
+      "error" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+      "mode" : "fail",
+      "snapshot.primaryUsedPercent" : 42,
+      "snapshot.updatedAtRelative" : "1 minute ago",
+      "snapshotPresent" : true
+    },
+    {
+      "error" : "nil",
+      "mode" : "success",
+      "snapshot.primaryUsedPercent" : 42,
+      "snapshot.updatedAtRelative" : "just now",
+      "snapshotPresent" : true
+    }
+  ],
+  "store.errorPresent" : false,
+  "store.isRefreshing" : false,
+  "store.snapshotPresent" : true,
+  "timestamp" : "2026-10-23T06:29:20Z"
+}owner=CodexBar number=53 layer=101 alpha=1.0 onscreen=true bounds={
+    Height = 243;
+    Width = 310;
+    X = 708;
+    Y = 31;
+}
+owner=CodexBar number=53 layer=101 alpha=1.0 onscreen=true bounds={
+    Height = 243;
+    Width = 310;
+    X = 708;
+    Y = 31;
+}
+=== recovery harness runtime evidence (redacted) ===
+harness enabled, directory=/tmp/codexbar-proof state=recovery
+plugin registered: name=Fixture Usage id=fixture-stale-proof topLevel=true file=fixture-stale-proof.js
+plugin approval recorded origins=["http://127.0.0.1:8765"] settings=["BASE_URL"]
+production refresh step mode=success
+step mode=success snapshotPresent=true usedPercent=42.0 error=nil
+waiting 70s before the failing refresh
+production refresh step mode=fail
+step mode=fail snapshotPresent=true usedPercent=42.0 error=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+production refresh step mode=success
+step mode=success snapshotPresent=true usedPercent=42.0 error=nil
+state=recovery
+steps=[["snapshot.updatedAtRelative": "just now", "error": "nil", "snapshotPresent": true, "mode": "success", "snapshot.primaryUsedPercent": 42.0], ["mode": "fail", "snapshotPresent": true, "snapshot.primaryUsedPercent": 42.0, "snapshot.updatedAtRelative": "1 minute ago", "error": "Usage request failed (HTTP 500): fixture endpoint stopped responding."], ["snapshot.primaryUsedPercent": 42.0, "mode": "success", "error": "nil", "snapshotPresent": true, "snapshot.updatedAtRelative": "just now"]]
+snapshot.present=true snapshot.primaryUsedPercent=42.0 snapshot.updatedAtRelative=just now
+error.text=nil
+card.usageState=current card.isStale=false card.showsUsageRows=true
+card.errorText=
+card.lastKnownText=
+card.placeholderText=nil
+menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+app.version=0.80.1 app.gitCommit=2656f6fac
+wrote marker /tmp/codexbar-proof/marker-state-recovery.json
+opening the real status-item menu
+=== recovery app stdout tail ===
+[proof-harness] waiting 70s before the failing refresh
+[proof-harness] production refresh step mode=fail
+[proof-harness] step mode=fail snapshotPresent=true usedPercent=42.0 error=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+[proof-harness] production refresh step mode=success
+[proof-harness] step mode=success snapshotPresent=true usedPercent=42.0 error=nil
+[proof-harness] state=recovery
+[proof-harness] steps=[["snapshot.updatedAtRelative": "just now", "error": "nil", "snapshotPresent": true, "mode": "success", "snapshot.primaryUsedPercent": 42.0], ["mode": "fail", "snapshotPresent": true, "snapshot.primaryUsedPercent": 42.0, "snapshot.updatedAtRelative": "1 minute ago", "error": "Usage request failed (HTTP 500): fixture endpoint stopped responding."], ["snapshot.primaryUsedPercent": 42.0, "mode": "success", "error": "nil", "snapshotPresent": true, "snapshot.updatedAtRelative": "just now"]]
+[proof-harness] snapshot.present=true snapshot.primaryUsedPercent=42.0 snapshot.updatedAtRelative=just now
+[proof-harness] error.text=nil
+[proof-harness] card.usageState=current card.isStale=false card.showsUsageRows=true
+[proof-harness] card.errorText=
+[proof-harness] card.lastKnownText=
+[proof-harness] card.placeholderText=nil
+[proof-harness] menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+[proof-harness] statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+[proof-harness] app.version=0.80.1 app.gitCommit=2656f6fac
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-state-recovery.json
+[proof-harness] opening the real status-item menu
+Sampling process 13507 for 3 seconds with 1 millisecond of run time between samples
+Sampling completed, processing symbols...
+/Users/runner/work/_temp/32954026-c6ff-48bb-a919-91533e9894df.sh: line 87: 13507 Terminated: 15          "$APP/Contents/MacOS/CodexBar" > "$LOG" 2>&1
+=== fixture server log ===
+/Users/runner/work/_temp/32954026-c6ff-48bb-a919-91533e9894df.sh: line 133:  9651 Terminated: 15          python3 -u "$RUNNER_TEMP/fixture_server.py" > "$OUT/fixture-server.log" 2>&1
+total 2576
+drwxr-xr-x  47 runner  staff    1504 Oct 23 06:29 .
+drwxr-xr-x  37 runner  staff    1184 Oct 23 06:25 ..
+-rw-r--r--   1 runner  staff    1860 Oct 23 06:27 app-failure-only.log
+-rw-r--r--   1 runner  staff    2335 Oct 23 06:29 app-recovery.log
+-rw-r--r--   1 runner  staff    2267 Oct 23 06:27 app-success-failure.log
+-rw-r--r--   1 runner  staff    1596 Oct 23 06:26 app-success.log
+-rw-r--r--   1 runner  staff       0 Oct 23 06:25 fixture-server.log
+-rw-r--r--   1 runner  staff    2193 Oct 23 06:27 marker-state-failure-only.json
+-rw-r--r--   1 runner  staff    2400 Oct 23 06:29 marker-state-recovery.json
+-rw-r--r--   1 runner  staff    2531 Oct 23 06:27 marker-state-success-failure.json
+-rw-r--r--   1 runner  staff    1964 Oct 23 06:26 marker-state-success.json
+-rw-r--r--@  1 runner  staff  106861 Oct 23 06:27 menu-screen-failure-only-1.png
+-rw-r--r--@  1 runner  staff  106905 Oct 23 06:27 menu-screen-failure-only-2.png
+-rw-r--r--@  1 runner  staff  103320 Oct 23 06:29 menu-screen-recovery-1.png
+-rw-r--r--@  1 runner  staff  103386 Oct 23 06:29 menu-screen-recovery-2.png
+-rw-r--r--@  1 runner  staff  103277 Oct 23 06:26 menu-screen-success-1.png
+-rw-r--r--@  1 runner  staff  103335 Oct 23 06:26 menu-screen-success-2.png
+-rw-r--r--@  1 runner  staff  110765 Oct 23 06:27 menu-screen-success-failure-1.png
+-rw-r--r--@  1 runner  staff  110884 Oct 23 06:27 menu-screen-success-failure-2.png
+-rw-r--r--@  1 runner  staff     815 Oct 23 06:27 runtime-evidence-failure-only.txt
+-rw-r--r--@  1 runner  staff     974 Oct 23 06:29 runtime-evidence-recovery.txt
+-rw-r--r--@  1 runner  staff    1027 Oct 23 06:27 runtime-evidence-success-failure.txt
+-rw-r--r--@  1 runner  staff     624 Oct 23 06:26 runtime-evidence-success.txt
+-rw-r--r--@  1 runner  staff   39355 Oct 23 06:27 window-failure-only-1-47.png
+-rw-r--r--@  1 runner  staff   39355 Oct 23 06:27 window-failure-only-2-47.png
+-rw-r--r--   1 runner  staff       3 Oct 23 06:27 window-numbers-failure-only-1.txt
+-rw-r--r--   1 runner  staff       3 Oct 23 06:27 window-numbers-failure-only-2.txt
+-rw-r--r--   1 runner  staff       3 Oct 23 06:29 window-numbers-recovery-1.txt
+-rw-r--r--   1 runner  staff       3 Oct 23 06:29 window-numbers-recovery-2.txt
+-rw-r--r--   1 runner  staff       3 Oct 23 06:26 window-numbers-success-1.txt
+-rw-r--r--   1 runner  staff       3 Oct 23 06:26 window-numbers-success-2.txt
+-rw-r--r--   1 runner  staff       3 Oct 23 06:27 window-numbers-success-failure-1.txt
+-rw-r--r--   1 runner  staff       3 Oct 23 06:27 window-numbers-success-failure-2.txt
+-rw-r--r--@  1 runner  staff   35925 Oct 23 06:29 window-recovery-1-53.png
+-rw-r--r--@  1 runner  staff   35925 Oct 23 06:29 window-recovery-2-53.png
+-rw-r--r--@  1 runner  staff   35925 Oct 23 06:26 window-success-1-32.png
+-rw-r--r--@  1 runner  staff   35925 Oct 23 06:26 window-success-2-32.png
+-rw-r--r--@  1 runner  staff   45547 Oct 23 06:27 window-success-failure-1-41.png
+-rw-r--r--@  1 runner  staff   45547 Oct 23 06:27 window-success-failure-2-41.png
+-rw-r--r--   1 runner  staff     130 Oct 23 06:27 windows-failure-only-1.txt
+-rw-r--r--   1 runner  staff     130 Oct 23 06:27 windows-failure-only-2.txt
+-rw-r--r--   1 runner  staff     130 Oct 23 06:29 windows-recovery-1.txt
+-rw-r--r--   1 runner  staff     130 Oct 23 06:29 windows-recovery-2.txt
+-rw-r--r--   1 runner  staff     130 Oct 23 06:26 windows-success-1.txt
+-rw-r--r--   1 runner  staff     130 Oct 23 06:26 windows-success-2.txt
+-rw-r--r--   1 runner  staff     130 Oct 23 06:27 windows-success-failure-1.txt
+-rw-r--r--   1 runner  staff     130 Oct 23 06:27 windows-success-failure-2.txt
+failures=0
+PROOF CAPTURE OK

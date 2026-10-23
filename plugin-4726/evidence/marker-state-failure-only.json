@@ -1,0 +1,56 @@
+{
+  "app.build" : "174",
+  "app.bundleIdentifier" : "com.steipete.codexbar.debug",
+  "app.bundlePath" : "\/Users\/runner\/work\/codexbar-proof-runner\/codexbar-proof-runner\/CodexBar.app",
+  "app.gitCommit" : "2656f6fac",
+  "app.version" : "0.80.1",
+  "card.errorText" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+  "card.fingerprint" : "en|none|none|0|Usage request failed (HTTP 500): fixture endpoint stopped responding.|",
+  "card.isRefreshing" : false,
+  "card.isStale" : false,
+  "card.lastKnownText" : "",
+  "card.placeholderText" : "nil",
+  "card.showsUsageRows" : false,
+  "card.usageState" : "none",
+  "error.text" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+  "lastKnownUsagePresentation.message" : "Showing last-known usage captured just now.",
+  "menu.userPluginsForMenu.nonMerged" : [
+    "fixture-stale-proof"
+  ],
+  "plugin.config" : {
+    "BASE_URL" : "http:\/\/127.0.0.1:8765"
+  },
+  "plugin.file" : "fixture-stale-proof.js",
+  "plugin.id" : "fixture-stale-proof",
+  "plugin.name" : "Fixture Usage",
+  "plugin.topLevel" : true,
+  "registry.pluginIDs" : [
+    "fixture-stale-proof"
+  ],
+  "scenario" : "user-plugin-success-then-refresh-failure-retained-usage",
+  "settings.isPluginEnabled" : true,
+  "settings.refreshFrequency" : "manual",
+  "settings.selectedMenuProvider" : "fixture-stale-proof",
+  "snapshot.present" : false,
+  "snapshot.primaryUsedPercent" : -1,
+  "snapshot.primaryWindowMinutes" : -1,
+  "snapshot.secondaryPresent" : false,
+  "snapshot.updatedAt" : "nil",
+  "snapshot.updatedAtRelative" : "nil",
+  "state" : "failure-only",
+  "status" : "menu-open-requested",
+  "statusItem.debug" : "statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))",
+  "steps" : [
+    {
+      "error" : "Usage request failed (HTTP 500): fixture endpoint stopped responding.",
+      "mode" : "fail",
+      "snapshot.primaryUsedPercent" : -1,
+      "snapshot.updatedAtRelative" : "nil",
+      "snapshotPresent" : false
+    }
+  ],
+  "store.errorPresent" : true,
+  "store.isRefreshing" : false,
+  "store.snapshotPresent" : false,
+  "timestamp" : "2026-10-23T06:27:48Z"
+}

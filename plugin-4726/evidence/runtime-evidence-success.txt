@@ -1,0 +1,11 @@
+state=success
+steps=[["snapshot.updatedAtRelative": "just now", "error": "nil", "snapshot.primaryUsedPercent": 42.0, "mode": "success", "snapshotPresent": true]]
+snapshot.present=true snapshot.primaryUsedPercent=42.0 snapshot.updatedAtRelative=just now
+error.text=nil
+card.usageState=current card.isStale=false card.showsUsageRows=true
+card.errorText=
+card.lastKnownText=
+card.placeholderText=nil
+menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+app.version=0.80.1 app.gitCommit=2656f6fac

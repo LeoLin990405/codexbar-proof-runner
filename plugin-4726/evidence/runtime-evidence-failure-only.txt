@@ -1,0 +1,11 @@
+state=failure-only
+steps=[["error": "Usage request failed (HTTP 500): fixture endpoint stopped responding.", "snapshotPresent": false, "snapshot.primaryUsedPercent": -1, "mode": "fail", "snapshot.updatedAtRelative": "nil"]]
+snapshot.present=false snapshot.primaryUsedPercent=-1.0 snapshot.updatedAtRelative=nil
+error.text=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+card.usageState=none card.isStale=false card.showsUsageRows=false
+card.errorText=Usage request failed (HTTP 500): fixture endpoint stopped responding.
+card.lastKnownText=
+card.placeholderText=nil
+menu.userPluginsForMenu.nonMerged=["fixture-stale-proof"]
+statusItem.debug=statusItem.visible=true length=-1.0 buttonWindow=4294967296 buttonFrame=Optional((754.0, 738.0, 53.0, 30.0))
+app.version=0.80.1 app.gitCommit=2656f6fac
