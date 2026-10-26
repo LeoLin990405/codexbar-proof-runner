@@ -1,0 +1,80 @@
+{
+  "app.build" : "175",
+  "app.bundleIdentifier" : "com.steipete.codexbar.debug",
+  "app.bundlePath" : "\/Users\/runner\/work\/codexbar-proof-runner\/codexbar-proof-runner\/CodexBar.app",
+  "app.gitCommit" : "bc34751ff",
+  "app.version" : "0.81.1",
+  "hiddenIDs.afterClear" : [
+    "detailSection:Credits"
+  ],
+  "hiddenIDs.migrated" : [
+    "detailSection:Credits"
+  ],
+  "mode" : "before",
+  "model.metrics" : [
+    "Credits"
+  ],
+  "model.providerDetailRawTitles" : [
+    "Credits"
+  ],
+  "picker.hasCustomVisibility" : true,
+  "picker.itemIDs" : [
+    "metric:primary",
+    "detailSection:Credits"
+  ],
+  "picker.items" : [
+    {
+      "id" : "metric:primary",
+      "isVisible" : true,
+      "requiresOptionalUsage" : false,
+      "title" : "Credits"
+    },
+    {
+      "id" : "detailSection:Credits",
+      "isVisible" : false,
+      "requiresOptionalUsage" : false,
+      "title" : "Credits"
+    }
+  ],
+  "picker.itemTitles" : [
+    "Credits",
+    "Credits"
+  ],
+  "provider" : "traecn",
+  "provider.displayName" : "Trae CN",
+  "scenario" : "traecn-visible-usage-items-picker",
+  "scrollMaxOffset" : 207,
+  "scrollOffset" : 207,
+  "snapshot.detailRowLabels" : [
+    "Used",
+    "Total",
+    "Remaining"
+  ],
+  "snapshot.detailsTitles" : [
+    "Credits"
+  ],
+  "snapshot.present" : true,
+  "snapshot.primaryUsedPercent" : 30,
+  "status" : "ready",
+  "step" : 1,
+  "stepCount" : 3,
+  "timestamp" : "2026-10-26T06:18:23Z",
+  "windowFrame" : [
+    8,
+    71,
+    1008,
+    658
+  ],
+  "windowIsVisible" : true,
+  "windowNumber" : 34,
+  "windowServer" : {
+    "alpha" : 1,
+    "bounds" : "{\n    Height = 658;\n    Width = 1008;\n    X = 8;\n    Y = 39;\n}",
+    "found" : true,
+    "layer" : 0,
+    "number" : 34,
+    "onscreen" : true,
+    "ownerName" : "CodexBar"
+  },
+  "windowTitle" : "Trae CN"
+}

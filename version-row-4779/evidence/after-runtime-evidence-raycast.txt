@@ -1,0 +1,7 @@
+provider=raycast displayName=Raycast
+presentation.detailLine=web
+presentation.showsVersionInSettings=false
+presentation.versionText=nil
+store.version=nil store.sourceLabel=web (lastSourceLabel harness-set to "web")
+window.number=51 window.frame=(8.0, 71.0, 1008.0, 658.0)
+app.version=0.81.1 app.gitCommit=57836c6cd

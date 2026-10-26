@@ -1,0 +1,35 @@
+Sampling process 14463 for 3 seconds with 1 millisecond of run time between samples
+[proof-harness] harness enabled, directory=/tmp/codexbar-proof mode=after detailTitle=Credit breakdown
+Sampling completed, processing symbols...
+[proof-harness] hidden-ID migration: stored=detailSection:Credits resolved=[CodexBar.ProviderUsageItemID(rawValue: "detailSection:Credit breakdown")]
+[proof-harness] opening Settings on the Trae CN provider pane
+[proof-harness] Settings window visible: number=37 frame=(112.0, 124.0, 800.0, 592.0)
+Sample analysis of process 14463 written to file /Users/runner/Library/Logs/CodexBar/hang-sample-2026-10-26T061759.txt
+[proof-harness] mode=after step=0 scroll=0.0
+[proof-harness] provider=traecn snapshot.present=true detailsTitles=["Credit breakdown"]
+[proof-harness] picker.itemIDs=["metric:primary", "detailSection:Credit breakdown"]
+[proof-harness] picker.itemTitles=["Credits", "Credit breakdown"]
+[proof-harness] picker.hasCustomVisibility=true
+[proof-harness] hiddenIDs.migrated=["detailSection:Credit breakdown"]
+[proof-harness] window.number=37
+[proof-harness] app.version=0.81.1 app.gitCommit=a06bf6393
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-step0.json
+[proof-harness] mode=after step=1 scroll=260.0
+[proof-harness] provider=traecn snapshot.present=true detailsTitles=["Credit breakdown"]
+[proof-harness] picker.itemIDs=["metric:primary", "detailSection:Credit breakdown"]
+[proof-harness] picker.itemTitles=["Credits", "Credit breakdown"]
+[proof-harness] picker.hasCustomVisibility=true
+[proof-harness] hiddenIDs.migrated=["detailSection:Credit breakdown"]
+[proof-harness] window.number=37
+[proof-harness] app.version=0.81.1 app.gitCommit=a06bf6393
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-step1.json
+[proof-harness] mode=after step=2 scroll=294.0
+[proof-harness] provider=traecn snapshot.present=true detailsTitles=["Credit breakdown"]
+[proof-harness] picker.itemIDs=["metric:primary", "detailSection:Credit breakdown"]
+[proof-harness] picker.itemTitles=["Credits", "Credit breakdown"]
+[proof-harness] picker.hasCustomVisibility=true
+[proof-harness] hiddenIDs.migrated=["detailSection:Credit breakdown"]
+[proof-harness] window.number=37
+[proof-harness] app.version=0.81.1 app.gitCommit=a06bf6393
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-step2.json
+[proof-harness] capture sequence complete

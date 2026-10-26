@@ -1,0 +1,3 @@
+[proof-harness] harness enabled, directory=/tmp/codexbar-proof mode=seed
+[proof-harness] seed: wrote legacy hidden id detailSection:Credits; config now holds ["detailSection:Credits"] resolved=["detailSection:Credit breakdown"]
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-seed.json

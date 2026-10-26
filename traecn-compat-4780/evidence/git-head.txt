@@ -1,0 +1,4 @@
+6eacc5116 chore(proof): show legacy Trae CN hidden detail section survives restart
+e7eb07544 fix(traecn): distinguish the credit breakdown from the main Credits bar
+d34fbb47a chore: start 0.81.1 development
+6eacc511668bd745ae0c52cd388477b893a148b5

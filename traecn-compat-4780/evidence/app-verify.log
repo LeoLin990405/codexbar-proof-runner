@@ -1,0 +1,15 @@
+[proof-harness] harness enabled, directory=/tmp/codexbar-proof mode=verify
+[proof-harness] verify: raw config hidden ids=["detailSection:Credits"] resolved hidden ids=["detailSection:Credit breakdown"]
+[proof-harness] opening Settings on the Trae CN provider pane
+[proof-harness] Settings window visible: number=38 frame=(112.0, 124.0, 800.0, 592.0)
+[proof-harness] mode=verify
+[proof-harness] config.hiddenUsageItemIDs=["detailSection:Credits"]
+[proof-harness] resolvedHiddenIDs=["detailSection:Credit breakdown"]
+[proof-harness] picker.itemIDs=["metric:primary", "detailSection:Credit breakdown"]
+[proof-harness] picker.itemTitles=["Credits", "Credit breakdown"]
+[proof-harness] migratedDetailRow.present=true migratedDetailRow.isVisible=false
+[proof-harness] hasLegacyRow=false hasUnavailablePlaceholderRow=false
+[proof-harness] window.number=38
+[proof-harness] app.version=0.81.1 app.gitCommit=6eacc5116
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-verify.json
+[proof-harness] marker written; keeping the Settings window on screen for capture

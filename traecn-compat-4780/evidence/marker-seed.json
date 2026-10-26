@@ -1,0 +1,13 @@
+{
+  "app.gitCommit" : "6eacc5116",
+  "config.hiddenUsageItemIDs" : [
+    "detailSection:Credits"
+  ],
+  "legacyHiddenID" : "detailSection:Credits",
+  "mode" : "seed",
+  "resolvedHiddenIDs" : [
+    "detailSection:Credit breakdown"
+  ],
+  "status" : "seeded",
+  "timestamp" : "2026-10-26T06:34:35Z"
+}

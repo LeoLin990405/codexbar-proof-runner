@@ -1,0 +1,35 @@
+[proof-harness] harness enabled, directory=/tmp/codexbar-proof mode=before detailTitle=Credits
+[proof-harness] hidden-ID migration: stored=detailSection:Credits resolved=[CodexBar.ProviderUsageItemID(rawValue: "detailSection:Credits")]
+[proof-harness] opening Settings on the Trae CN provider pane
+[proof-harness] Settings window visible: number=34 frame=(112.0, 124.0, 800.0, 592.0)
+Sampling process 12848 for 3 seconds with 1 millisecond of run time between samples
+Sampling completed, processing symbols...
+[proof-harness] mode=before step=0 scroll=0.0
+[proof-harness] provider=traecn snapshot.present=true detailsTitles=["Credits"]
+[proof-harness] picker.itemIDs=["metric:primary", "detailSection:Credits"]
+[proof-harness] picker.itemTitles=["Credits", "Credits"]
+[proof-harness] picker.hasCustomVisibility=true
+[proof-harness] hiddenIDs.migrated=["detailSection:Credits"]
+[proof-harness] window.number=34
+[proof-harness] app.version=0.81.1 app.gitCommit=bc34751ff
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-step0.json
+Sample analysis of process 12848 written to file /Users/runner/Library/Logs/CodexBar/hang-sample-2026-10-26T061803.txt
+[proof-harness] mode=before step=1 scroll=207.0
+[proof-harness] provider=traecn snapshot.present=true detailsTitles=["Credits"]
+[proof-harness] picker.itemIDs=["metric:primary", "detailSection:Credits"]
+[proof-harness] picker.itemTitles=["Credits", "Credits"]
+[proof-harness] picker.hasCustomVisibility=true
+[proof-harness] hiddenIDs.migrated=["detailSection:Credits"]
+[proof-harness] window.number=34
+[proof-harness] app.version=0.81.1 app.gitCommit=bc34751ff
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-step1.json
+[proof-harness] mode=before step=2 scroll=207.0
+[proof-harness] provider=traecn snapshot.present=true detailsTitles=["Credits"]
+[proof-harness] picker.itemIDs=["metric:primary", "detailSection:Credits"]
+[proof-harness] picker.itemTitles=["Credits", "Credits"]
+[proof-harness] picker.hasCustomVisibility=true
+[proof-harness] hiddenIDs.migrated=["detailSection:Credits"]
+[proof-harness] window.number=34
+[proof-harness] app.version=0.81.1 app.gitCommit=bc34751ff
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-step2.json
+[proof-harness] capture sequence complete

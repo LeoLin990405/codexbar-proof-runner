@@ -1,0 +1,4 @@
+a06bf6393 chore(proof): capture Trae CN Visible usage items picker from the running app
+e7eb07544 fix(traecn): distinguish the credit breakdown from the main Credits bar
+d34fbb47a chore: start 0.81.1 development
+a06bf63935afd97275ac7b7f92cd39ced0d71b2c

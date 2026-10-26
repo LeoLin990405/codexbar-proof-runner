@@ -1,0 +1,13 @@
+[proof-harness] harness enabled, directory=/tmp/codexbar-proof provider=cursor
+[proof-harness] harness-set lastSourceLabel=web for cursor
+[proof-harness] opening Settings on the cursor provider pane
+[proof-harness] Settings window visible: number=33 frame=(112.0, 124.0, 800.0, 592.0)
+[proof-harness] provider=cursor displayName=Cursor
+[proof-harness] presentation.detailLine=web
+[proof-harness] presentation.showsVersionInSettings=false
+[proof-harness] presentation.versionText=nil
+[proof-harness] store.version=nil store.sourceLabel=web (lastSourceLabel harness-set to "web")
+[proof-harness] window.number=33 window.frame=(8.0, 71.0, 1008.0, 658.0)
+[proof-harness] app.version=0.81.1 app.gitCommit=57836c6cd
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-provider-cursor.json
+[proof-harness] marker written; keeping the Settings window on screen for capture

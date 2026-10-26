@@ -1,0 +1,8 @@
+mode=before step=2 scroll=207.0
+provider=traecn snapshot.present=true detailsTitles=["Credits"]
+picker.itemIDs=["metric:primary", "detailSection:Credits"]
+picker.itemTitles=["Credits", "Credits"]
+picker.hasCustomVisibility=true
+hiddenIDs.migrated=["detailSection:Credits"]
+window.number=34
+app.version=0.81.1 app.gitCommit=bc34751ff

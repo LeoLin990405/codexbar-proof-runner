@@ -1,0 +1,37 @@
+{
+  "app.build" : "175",
+  "app.bundleIdentifier" : "com.steipete.codexbar.debug",
+  "app.bundlePath" : "\/Users\/runner\/work\/codexbar-proof-runner\/codexbar-proof-runner\/CodexBar.app",
+  "app.gitCommit" : "84ed27538",
+  "app.version" : "0.81.1",
+  "presentation.detailLine" : "web",
+  "presentation.showsVersionInSettings" : true,
+  "presentation.versionText" : "not detected",
+  "presentation.versionTextIsNil" : false,
+  "provider" : "cursor",
+  "provider.displayName" : "Cursor",
+  "scenario" : "provider-settings-version-row",
+  "sourceLabel.harnessInjected" : true,
+  "status" : "ready",
+  "store.sourceLabel" : "web",
+  "store.version" : "nil",
+  "timestamp" : "2026-10-26T06:26:39Z",
+  "windowFrame" : [
+    8,
+    71,
+    1008,
+    658
+  ],
+  "windowIsVisible" : true,
+  "windowNumber" : 34,
+  "windowServer" : {
+    "alpha" : 1,
+    "bounds" : "{\n    Height = 658;\n    Width = 1008;\n    X = 8;\n    Y = 39;\n}",
+    "found" : true,
+    "layer" : 0,
+    "number" : 34,
+    "onscreen" : true,
+    "ownerName" : "CodexBar"
+  },
+  "windowTitle" : "Cursor"
+}

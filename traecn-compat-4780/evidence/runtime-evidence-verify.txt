@@ -1,0 +1,9 @@
+mode=verify
+config.hiddenUsageItemIDs=["detailSection:Credits"]
+resolvedHiddenIDs=["detailSection:Credit breakdown"]
+picker.itemIDs=["metric:primary", "detailSection:Credit breakdown"]
+picker.itemTitles=["Credits", "Credit breakdown"]
+migratedDetailRow.present=true migratedDetailRow.isVisible=false
+hasLegacyRow=false hasUnavailablePlaceholderRow=false
+window.number=38
+app.version=0.81.1 app.gitCommit=6eacc5116

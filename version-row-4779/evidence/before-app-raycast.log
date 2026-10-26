@@ -1,0 +1,13 @@
+[proof-harness] harness enabled, directory=/tmp/codexbar-proof provider=raycast
+[proof-harness] harness-set lastSourceLabel=web for raycast
+[proof-harness] opening Settings on the raycast provider pane
+[proof-harness] Settings window visible: number=51 frame=(8.0, 71.0, 1008.0, 658.0)
+[proof-harness] provider=raycast displayName=Raycast
+[proof-harness] presentation.detailLine=web
+[proof-harness] presentation.showsVersionInSettings=true
+[proof-harness] presentation.versionText=not detected
+[proof-harness] store.version=nil store.sourceLabel=web (lastSourceLabel harness-set to "web")
+[proof-harness] window.number=51 window.frame=(8.0, 71.0, 1008.0, 658.0)
+[proof-harness] app.version=0.81.1 app.gitCommit=84ed27538
+[proof-harness] wrote marker /tmp/codexbar-proof/marker-provider-raycast.json
+[proof-harness] marker written; keeping the Settings window on screen for capture

@@ -1,0 +1,5 @@
+57836c6cd chore(proof): show the post-success web source label on the provider cards
+29c4ade12 chore(proof): capture Cursor and Raycast provider cards from the running app
+705318b3d fix(settings): hide undetected version row for web-only Cursor and Raycast (#4769)
+57836c6cda92039ac1ab7956bc5dc10195f1f702
+57836c6cda92039ac1ab7956bc5dc10195f1f702

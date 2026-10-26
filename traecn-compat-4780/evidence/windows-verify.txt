@@ -1,0 +1,30 @@
+owner=CodexBar number=42 layer=0 alpha=1.0 onscreen=false bounds={
+    Height = 30;
+    Width = 1024;
+    X = 0;
+    Y = 0;
+}
+owner=CodexBar number=41 layer=0 alpha=1.0 onscreen=false bounds={
+    Height = 30;
+    Width = 1024;
+    X = 0;
+    Y = 0;
+}
+owner=CodexBar number=40 layer=0 alpha=1.0 onscreen=false bounds={
+    Height = 30;
+    Width = 1024;
+    X = 0;
+    Y = 0;
+}
+owner=CodexBar number=39 layer=0 alpha=1.0 onscreen=false bounds={
+    Height = 30;
+    Width = 1024;
+    X = 0;
+    Y = 0;
+}
+owner=CodexBar number=38 layer=0 alpha=1.0 onscreen=true bounds={
+    Height = 658;
+    Width = 1008;
+    X = 8;
+    Y = 39;
+}
