@@ -1,0 +1,89 @@
+# Proof runner for steipete/CodexBar#4769 / PR #4779 (fork-only repo; never merged upstream).
+#
+# Runs the two commits under review from the public CodexBar fork:
+#   BEFORE 6fb6ede5 = tests-only commit; the new Cursor/Raycast version-row regressions must FAIL
+#   AFTER  705318b3 = same tests + presentation fix; the focused suite must PASS
+name: proof-4769-version-row
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: proof-4769-version-row
+  cancel-in-progress: true
+
+jobs:
+  red-green:
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - name: Toolchain fact sheet
+        run: |
+          set -euo pipefail
+          sw_vers
+          xcodebuild -version
+          swift --version
+
+      - name: Check out tests-only commit (BEFORE)
+        run: |
+          set -euo pipefail
+          git init workspace
+          cd workspace
+          git remote add origin https://github.com/LeoLin990405/CodexBar.git
+          git fetch --depth 1 origin 6fb6ede5134682278ad5875c6f1fe68d31f79dde
+          git checkout -q FETCH_HEAD
+          echo "BEFORE=$(git rev-parse HEAD)"
+          git log --oneline -1
+
+      - name: BEFORE fix — focused suite must FAIL (red)
+        working-directory: workspace
+        run: |
+          set -uo pipefail
+          source ./Scripts/test_environment.sh
+          set +e
+          swift test --filter ProviderSettingsDescriptorTests 2>&1 | tee "${GITHUB_WORKSPACE}/before-fix.log"
+          status=${PIPESTATUS[0]}
+          set -e
+          echo "BEFORE_FIX_EXIT=${status}"
+          echo "=== regression test failure lines ==="
+          grep -E "hides the unsupported version row|version-capable providers keep" \
+            "${GITHUB_WORKSPACE}/before-fix.log" || true
+          echo "=== expectation failures ==="
+          grep -E "Expectation failed" "${GITHUB_WORKSPACE}/before-fix.log" | head -10 || true
+          if [[ "${status}" -eq 0 ]]; then
+            echo "UNEXPECTED: focused suite passed before the fix; red proof invalid"
+            exit 1
+          fi
+          echo "RED_CONFIRMED: Cursor/Raycast version-row regressions fail without the fix."
+
+      - name: Check out fix commit (AFTER)
+        run: |
+          set -euo pipefail
+          cd workspace
+          git fetch --depth 1 origin 705318b3dca1b1ace38ee6f915c37be9aaf24215
+          git checkout -qf FETCH_HEAD
+          echo "AFTER=$(git rev-parse HEAD)"
+          git log --oneline -1
+
+      - name: AFTER fix — focused suite must PASS (green)
+        working-directory: workspace
+        run: |
+          set -euo pipefail
+          source ./Scripts/test_environment.sh
+          swift test --filter ProviderSettingsDescriptorTests 2>&1 | tee "${GITHUB_WORKSPACE}/after-fix.log"
+          echo "GREEN_CONFIRMED: focused ProviderSettingsDescriptorTests suite passes with the fix."
+
+      - name: Summarize proof
+        if: ${{ always() }}
+        run: |
+          {
+            printf '### #4769 version-row red/green proof\n\n'
+            printf '| Field | Value |\n| --- | --- |\n'
+            printf '| Runner | `%s` |\n' "${RUNNER_NAME:-unknown}"
+            printf '| BEFORE (tests-only) | `6fb6ede5134682278ad5875c6f1fe68d31f79dde` |\n'
+            printf '| AFTER (fix) | `705318b3dca1b1ace38ee6f915c37be9aaf24215` |\n'
+            printf '| Focused suite | `swift test --filter ProviderSettingsDescriptorTests` |\n'
+          } >> "$GITHUB_STEP_SUMMARY"
