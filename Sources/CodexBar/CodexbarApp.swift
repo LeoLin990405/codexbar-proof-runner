@@ -413,6 +413,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func _test_configureSettings(_ settings: SettingsStore) {
         self.settings = settings
     }
+
+    /// FORK-ONLY PROOF: the live Settings window, used by the Trae CN picker screenshot harness.
+    var _proof_settingsWindow: NSWindow? {
+        self.settingsWindowController?.window
+    }
     #endif
 
     func configure(_ dependencies: Dependencies) {
@@ -471,6 +476,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         #endif
         self.ensureStatusController()
         self.observeSettingsApplicationMenuLanguage()
+        #if DEBUG
+        // FORK-ONLY PROOF: real Settings → Trae CN picker screenshot harness (ProofTraeCNPickerHarness.swift).
+        self.startProofTraeCNPickerHarnessIfRequested()
+        #endif
         self.scheduleSettingsApplicationMenuValidation(
             missingItemRetriesRemaining: Self.settingsMenuReadinessRetryCount,
             fallbackVerificationRetriesRemaining: Self.settingsMenuFallbackVerificationRetryCount)
@@ -553,6 +562,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard let statusController else { return }
         await statusController.runLoginFlowFromSettings(provider: provider)
     }
+
+    #if DEBUG
+    /// FORK-ONLY PROOF: schedules one run of the Trae CN picker screenshot harness.
+    private func startProofTraeCNPickerHarnessIfRequested() {
+        guard ProofTraeCNPickerHarness.isRequested else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self, let store = self.store, let settings = self.settings else { return }
+            ProofTraeCNPickerHarness.run(
+                settings: settings,
+                store: store,
+                appDelegate: self)
+        }
+    }
+    #endif
 
     func openSettings(pane: SettingsPane?) {
         // Escape NSMenu's synchronous tracking callback before activating and presenting a window.
