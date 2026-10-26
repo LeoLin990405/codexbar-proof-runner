@@ -1,0 +1,185 @@
+# FORK-ONLY WORKFLOW — real running-app Settings card proof for upstream CodexBar PR #4779.
+#
+# Builds the actual CodexBar.app on a GitHub-hosted macos-26 runner (real Aqua/WindowServer
+# session), lets the DEBUG harness open the real Settings window on the Cursor and Raycast provider
+# panes, and captures the live window with `screencapture -l`. Run on both the PR-head branch
+# (`proof/4779-after`) and the base-commit branch (`proof/4779-before`) for a before/after pair.
+#
+# Never intended for upstream: this file lives only on proof/* branches of the scratch repo.
+name: proof-provider-version-row
+
+on:
+  push:
+    branches: ["proof/*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  version-row:
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Runner and GUI fact sheet
+        run: |
+          set +e
+          echo "=== git head ==="; git log --oneline -2; git status --short --branch | head -5
+          echo "=== sw_vers ==="; sw_vers
+          echo "=== xcodebuild ==="; xcodebuild -version
+          echo "=== swift ==="; swift --version
+          echo "=== console user ==="; stat -f%Su /dev/console
+          echo "=== launchctl gui ==="; launchctl print "gui/$(id -u)" 2>&1 | grep -E "type = |session = |creator = " | head -5
+          echo "=== WindowServer ==="; pgrep -lx WindowServer
+          echo "=== AppleLanguages ==="; defaults read -g AppleLanguages 2>&1
+          echo "=== probe screencapture ==="; screencapture -x /tmp/desktop-probe.png && file /tmp/desktop-probe.png && sips -g pixelWidth -g pixelHeight /tmp/desktop-probe.png
+          echo "=== disk ==="; df -h / | tail -1
+
+      - name: Restore SwiftPM build cache
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: proof-swiftpm-${{ runner.os }}-${{ hashFiles('Package.resolved', 'Package.swift') }}-v1
+          restore-keys: |
+            proof-swiftpm-${{ runner.os }}-${{ hashFiles('Package.resolved', 'Package.swift') }}-
+            proof-swiftpm-${{ runner.os }}-
+
+      - name: Build and package CodexBar.app (debug, ad-hoc signed)
+        run: |
+          set -eo pipefail
+          echo "Starting build: $(date -u +%FT%TZ)"
+          CODEXBAR_SIGNING=adhoc CODEXBAR_PROOF_SKIP_WIDGET_EXTENSION=1 \
+            ./Scripts/package_app.sh debug 2>&1 | tee "$RUNNER_TEMP/build-package.log"
+          echo "Finished build: $(date -u +%FT%TZ)"
+          echo "=== packaged app ==="
+          ls -la CodexBar.app/Contents/MacOS
+          echo "bundle id: $(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' CodexBar.app/Contents/Info.plist)"
+          echo "git commit: $(/usr/libexec/PlistBuddy -c 'Print :CodexGitCommit' CodexBar.app/Contents/Info.plist)"
+          codesign -dv CodexBar.app 2>&1 | head -5
+          du -sh .build
+
+      - name: Capture the real Settings provider cards for Cursor and Raycast
+        run: |
+          set +e
+          APP="$PWD/CodexBar.app"
+          OUT="$PWD/proof-out"
+          PROOF_DIR=/tmp/codexbar-proof
+          mkdir -p "$OUT"
+          failures=0
+          git log --oneline -3 > "$OUT/git-head.txt"
+          git rev-parse HEAD >> "$OUT/git-head.txt"
+          git show -s --format=%H >> "$OUT/git-head.txt"
+
+          cat > "$RUNNER_TEMP/dump-windows.swift" <<'SWIFT'
+          import CoreGraphics
+          import Foundation
+          let windows = CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [[String: Any]] ?? []
+          for window in windows {
+              let owner = window[kCGWindowOwnerName as String] as? String ?? "?"
+              if !owner.lowercased().contains("codexbar") { continue }
+              let number = window[kCGWindowNumber as String] as? Int ?? -1
+              let layer = window[kCGWindowLayer as String] as? Int ?? -99
+              let alpha = window[kCGWindowAlpha as String] as? Double ?? -1
+              let onscreen = window[kCGWindowIsOnscreen as String] as? Bool ?? false
+              let bounds = window[kCGWindowBounds as String] ?? "?"
+              print("owner=\(owner) number=\(number) layer=\(layer) alpha=\(alpha) onscreen=\(onscreen) bounds=\(bounds)")
+          }
+          SWIFT
+
+          capture_round() {
+            local provider="$1"
+            local round="$2"
+            sleep 2.0
+            screencapture -x "$OUT/settings-$provider-screen-$round.png"
+            swift "$RUNNER_TEMP/dump-windows.swift" > "$OUT/windows-$provider-$round.txt" 2>&1
+            cat "$OUT/windows-$provider-$round.txt"
+            python3 - "$OUT/windows-$provider-$round.txt" > "$OUT/window-numbers-$provider-$round.txt" <<'PY'
+          import re, sys
+          text = open(sys.argv[1]).read()
+          for chunk in text.split('owner=')[1:]:
+              if 'onscreen=true' not in chunk:
+                  continue
+              number = re.search(r'number=(\d+)', chunk)
+              height = re.search(r'Height = (\d+)', chunk)
+              if not number:
+                  continue
+              h = int(height.group(1)) if height else 0
+              if h >= 300:
+                  print(number.group(1))
+          PY
+            while read -r num; do
+              [ -n "$num" ] && screencapture -x -l "$num" "$OUT/settings-$provider-window-$round-$num.png"
+            done < "$OUT/window-numbers-$provider-$round.txt"
+          }
+
+          for provider in cursor raycast; do
+            echo "=================== provider=$provider ==================="
+            pkill -x CodexBar 2>/dev/null
+            sleep 1
+            rm -rf "$PROOF_DIR"
+            mkdir -p "$PROOF_DIR"
+            printf '%s\n' "$provider" > "$PROOF_DIR/provider"
+            LOG="$OUT/app-$provider.log"
+            "$APP/Contents/MacOS/CodexBar" >"$LOG" 2>&1 &
+            echo "$(date -u +%H:%M:%S) launch provider=$provider pid=$!"
+            MARKER="$PROOF_DIR/marker-provider-$provider.json"
+            for i in $(seq 1 600); do
+              [ -f "$MARKER" ] && break
+              sleep 0.5
+            done
+            if [ ! -f "$MARKER" ]; then
+              echo "ERROR: no harness marker for provider=$provider; app log follows"
+              tail -80 "$LOG"
+              failures=$((failures + 1))
+              pkill -x CodexBar 2>/dev/null
+              sleep 2
+              pkill -9 -x CodexBar 2>/dev/null
+              continue
+            fi
+            cp "$MARKER" "$OUT/"
+            cp "$PROOF_DIR/runtime-evidence-$provider.txt" "$OUT/" 2>/dev/null
+            echo "=== $provider marker ==="
+            cat "$MARKER"
+            capture_round "$provider" 1
+            capture_round "$provider" 2
+            echo "=== $provider harness runtime evidence (redacted) ==="
+            grep "\[proof-harness\]" "$LOG" | sed 's/^\[proof-harness\] //' | head -40
+            pkill -x CodexBar 2>/dev/null
+            sleep 2
+            pkill -9 -x CodexBar 2>/dev/null
+          done
+
+          ls -la "$OUT"
+          for provider in cursor raycast; do
+            [ -s "$OUT/marker-provider-$provider.json" ] || { echo "MISSING marker for $provider"; failures=$((failures + 1)); }
+            ls "$OUT"/settings-$provider-screen-1.png >/dev/null 2>&1 || { echo "MISSING screen for $provider"; failures=$((failures + 1)); }
+          done
+          echo "failures=$failures"
+          if [ "$failures" -ne 0 ]; then
+            echo "PROOF CAPTURE INCOMPLETE"
+            exit 1
+          fi
+          echo "PROOF CAPTURE OK"
+
+      - name: Collect diagnostics
+        if: always()
+        run: |
+          set +e
+          mkdir -p proof-out
+          cp "$RUNNER_TEMP/build-package.log" proof-out/ 2>/dev/null
+          cp "$RUNNER_TEMP/dump-windows.swift" proof-out/ 2>/dev/null
+          cp -R /tmp/codexbar-proof proof-out/proof-dir 2>/dev/null
+          cp /tmp/desktop-probe.png proof-out/ 2>/dev/null
+          true
+
+      - name: Upload proof artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-proof-4779
+          path: proof-out
+          if-no-files-found: warn
