@@ -46,6 +46,11 @@ enum ProofProviderVersionRowHarness {
             metadata: store.metadata(for: provider),
             enabled: true)
         settings.providerEnablement[provider.instanceID] = true
+        // The bug report describes a provider whose web usage kept refreshing successfully. This
+        // credential-less runner cannot complete a real web fetch, so represent the production
+        // post-success state by setting the last source label the card shows after a web refresh.
+        store.lastSourceLabels[provider.instanceID] = "web"
+        self.log("harness-set lastSourceLabel=web for \(provider.rawValue)")
 
         self.log("opening Settings on the \(provider.rawValue) provider pane")
         appDelegate.openSettings(pane: .provider(provider.instanceID))
@@ -140,6 +145,7 @@ enum ProofProviderVersionRowHarness {
             "presentation.versionText": versionText ?? "nil",
             "store.version": storedVersion ?? "nil",
             "store.sourceLabel": sourceLabel,
+            "sourceLabel.harnessInjected": true,
             "windowNumber": window.windowNumber,
             "windowTitle": window.title,
             "windowFrame": windowFrame,
@@ -157,7 +163,8 @@ enum ProofProviderVersionRowHarness {
             "presentation.detailLine=\(detailLine)",
             "presentation.showsVersionInSettings=\(showsVersionInSettings)",
             "presentation.versionText=\(versionText ?? "nil")",
-            "store.version=\(storedVersion ?? "nil") store.sourceLabel=\(sourceLabel)",
+            "store.version=\(storedVersion ?? "nil") store.sourceLabel=\(sourceLabel) "
+                + "(lastSourceLabel harness-set to \"web\")",
             "window.number=\(window.windowNumber) window.frame=\(window.frame)",
             "app.version=\(info["CFBundleShortVersionString"] as? String ?? "") "
                 + "app.gitCommit=\(info["CodexGitCommit"] as? String ?? "")",
