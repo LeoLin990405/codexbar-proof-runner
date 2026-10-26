@@ -1,0 +1,181 @@
+# FORK-ONLY WORKFLOW — real running-app Settings picker proof for upstream CodexBar PR #4780.
+#
+# Builds the actual CodexBar.app on a GitHub-hosted macos-26 runner (real Aqua/WindowServer
+# session), injects a Trae CN usage snapshot through the existing DEBUG store hook, opens the real
+# Settings → Trae CN pane, walks the pane scroll offsets, and captures the live window so the
+# "Visible usage items" picker rows are visible. Run on the PR-head branch (`proof/4780-after`) and
+# the base-commit branch (`proof/4780-before`) for a label before/after pair.
+#
+# Never intended for upstream: this file lives only on proof/* branches of the scratch repo.
+name: proof-traecn-picker
+
+on:
+  push:
+    branches: ["proof/*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  traecn-picker:
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Runner and GUI fact sheet
+        run: |
+          set +e
+          echo "=== git head ==="; git log --oneline -2; git status --short --branch | head -5
+          echo "=== sw_vers ==="; sw_vers
+          echo "=== xcodebuild ==="; xcodebuild -version
+          echo "=== swift ==="; swift --version
+          echo "=== console user ==="; stat -f%Su /dev/console
+          echo "=== WindowServer ==="; pgrep -lx WindowServer
+          echo "=== AppleLanguages ==="; defaults read -g AppleLanguages 2>&1
+          echo "=== probe screencapture ==="; screencapture -x /tmp/desktop-probe.png && file /tmp/desktop-probe.png
+          echo "=== disk ==="; df -h / | tail -1
+
+      - name: Restore SwiftPM build cache
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: proof-swiftpm-${{ runner.os }}-${{ hashFiles('Package.resolved', 'Package.swift') }}-v1
+          restore-keys: |
+            proof-swiftpm-${{ runner.os }}-${{ hashFiles('Package.resolved', 'Package.swift') }}-
+            proof-swiftpm-${{ runner.os }}-
+
+      - name: Build and package CodexBar.app (debug, ad-hoc signed)
+        run: |
+          set -eo pipefail
+          echo "Starting build: $(date -u +%FT%TZ)"
+          CODEXBAR_SIGNING=adhoc CODEXBAR_PROOF_SKIP_WIDGET_EXTENSION=1 \
+            ./Scripts/package_app.sh debug 2>&1 | tee "$RUNNER_TEMP/build-package.log"
+          echo "Finished build: $(date -u +%FT%TZ)"
+          git rev-parse HEAD; git log --oneline -2
+          echo "git commit: $(/usr/libexec/PlistBuddy -c 'Print :CodexGitCommit' CodexBar.app/Contents/Info.plist)"
+          du -sh .build
+
+      - name: Capture the real Settings → Trae CN picker
+        run: |
+          set +e
+          APP="$PWD/CodexBar.app"
+          OUT="$PWD/proof-out"
+          PROOF_DIR=/tmp/codexbar-proof
+          mkdir -p "$OUT"
+          failures=0
+          BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          case "$BRANCH" in
+            *before*) MODE="before" ;;
+            *) MODE="after" ;;
+          esac
+          echo "branch=$BRANCH mode=$MODE"
+          printf '%s\n' "$BRANCH" > "$OUT/branch.txt"
+          git log --oneline -3 > "$OUT/git-head.txt"
+          git rev-parse HEAD >> "$OUT/git-head.txt"
+
+          cat > "$RUNNER_TEMP/dump-windows.swift" <<'SWIFT'
+          import CoreGraphics
+          import Foundation
+          let windows = CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [[String: Any]] ?? []
+          for window in windows {
+              let owner = window[kCGWindowOwnerName as String] as? String ?? "?"
+              if !owner.lowercased().contains("codexbar") { continue }
+              let number = window[kCGWindowNumber as String] as? Int ?? -1
+              let layer = window[kCGWindowLayer as String] as? Int ?? -99
+              let alpha = window[kCGWindowAlpha as String] as? Double ?? -1
+              let onscreen = window[kCGWindowIsOnscreen as String] as? Bool ?? false
+              let bounds = window[kCGWindowBounds as String] ?? "?"
+              print("owner=\(owner) number=\(number) layer=\(layer) alpha=\(alpha) onscreen=\(onscreen) bounds=\(bounds)")
+          }
+          SWIFT
+
+          window_number_from() {
+            local marker="$1"
+            local number
+            number=$(plutil -extract windowNumber raw -o - "$marker" 2>/dev/null)
+            if [ -z "$number" ]; then
+              number=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("windowNumber",""))' "$marker" 2>/dev/null)
+            fi
+            printf '%s' "$number"
+          }
+
+          pkill -x CodexBar 2>/dev/null
+          sleep 1
+          rm -rf "$PROOF_DIR"
+          mkdir -p "$PROOF_DIR"
+          printf '%s\n' "$MODE" > "$PROOF_DIR/mode"
+          LOG="$OUT/app-traecn.log"
+          "$APP/Contents/MacOS/CodexBar" >"$LOG" 2>&1 &
+          echo "$(date -u +%H:%M:%S) launch mode=$MODE pid=$!"
+
+          for step in 0 1 2; do
+            MARKER="$PROOF_DIR/marker-step$step.json"
+            for i in $(seq 1 600); do
+              [ -f "$MARKER" ] && break
+              sleep 0.5
+            done
+            if [ ! -f "$MARKER" ]; then
+              echo "ERROR: no marker for step=$step; app log follows"
+              tail -80 "$LOG"
+              failures=$((failures + 1))
+              break
+            fi
+            cp "$MARKER" "$OUT/"
+            cp "$PROOF_DIR/runtime-evidence-step$step.txt" "$OUT/" 2>/dev/null
+            echo "=== step=$step marker ==="
+            cat "$MARKER"
+            WINDOW_NUMBER=$(window_number_from "$MARKER")
+            echo "capturing step=$step window=$WINDOW_NUMBER"
+            sleep 2.0
+            screencapture -x "$OUT/traecn-screen-step$step.png"
+            screencapture -x -l "$WINDOW_NUMBER" "$OUT/traecn-window-step$step.png" 2>/dev/null
+            swift "$RUNNER_TEMP/dump-windows.swift" > "$OUT/windows-step$step.txt" 2>&1
+            cat "$OUT/windows-step$step.txt"
+            # keep a second capture once the menu tracking/idle state has settled
+            sleep 1.0
+            screencapture -x "$OUT/traecn-screen-step$step-b.png"
+            touch "$PROOF_DIR/next"
+            echo "=== step=$step harness runtime evidence (redacted) ==="
+            grep "\[proof-harness\]" "$LOG" | tail -20 | sed 's/^\[proof-harness\] //'
+          done
+
+          echo "=== full harness runtime evidence (redacted) ==="
+          grep "\[proof-harness\]" "$LOG" | sed 's/^\[proof-harness\] //' | head -80
+          pkill -x CodexBar 2>/dev/null
+          sleep 2
+          pkill -9 -x CodexBar 2>/dev/null
+
+          ls -la "$OUT"
+          for step in 0 1 2; do
+            [ -s "$OUT/marker-step$step.json" ] || { echo "MISSING marker step=$step"; failures=$((failures + 1)); }
+            [ -s "$OUT/traecn-screen-step$step.png" ] || { echo "MISSING screen step=$step"; failures=$((failures + 1)); }
+          done
+          echo "failures=$failures"
+          if [ "$failures" -ne 0 ]; then
+            echo "PROOF CAPTURE INCOMPLETE"
+            exit 1
+          fi
+          echo "PROOF CAPTURE OK"
+
+      - name: Collect diagnostics
+        if: always()
+        run: |
+          set +e
+          mkdir -p proof-out
+          cp "$RUNNER_TEMP/build-package.log" proof-out/ 2>/dev/null
+          cp "$RUNNER_TEMP/dump-windows.swift" proof-out/ 2>/dev/null
+          cp -R /tmp/codexbar-proof proof-out/proof-dir 2>/dev/null
+          cp /tmp/desktop-probe.png proof-out/ 2>/dev/null
+          true
+
+      - name: Upload proof artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-proof-4780
+          path: proof-out
+          if-no-files-found: warn
