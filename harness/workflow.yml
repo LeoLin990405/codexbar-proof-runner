@@ -1,0 +1,299 @@
+# FORK-ONLY WORKFLOW — shipped-CLI behavior + data-model compatibility proof for upstream CodexBar PR #4800.
+#
+# Builds the real CodexBarCLI from the PR head, then drives the shipped `codexbar hooks watch` path
+# against a fake `codex` app-server speaking the same newline JSON-RPC that CodexRPCClient expects.
+# The hook rule captures the real `usage_updated` delivery (JSON on stdin + CODEXBAR_* environment)
+# for two states: plan observation present (`local_rpc`, raw plan `pro`) and absent (fields omitted).
+# It also downloads the released v0.81.0 CLI, has that release-era binary write a usage payload in the
+# old format, and runs the fork-only ProofPlanCompat harness to decode that payload through the new
+# build's Codable model (planObservation nil, field omitted on round-trip, CLIUsageCache decodes).
+#
+# Never intended for upstream: this file and Proof/* live only on proof/* branches of the scratch repo.
+name: proof-4800-plan-hooks
+
+on:
+  push:
+    branches: ["proof/*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  plan-hooks:
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Runner fact sheet
+        run: |
+          set +e
+          echo "=== git head ==="; git log --oneline -2; git rev-parse HEAD
+          echo "=== sw_vers ==="; sw_vers
+          echo "=== xcodebuild ==="; xcodebuild -version
+          echo "=== swift ==="; swift --version
+          echo "=== disk ==="; df -h / | tail -1
+
+      - name: Restore SwiftPM build cache
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: proof-swiftpm-${{ runner.os }}-${{ hashFiles('Package.resolved', 'Package.swift') }}-v1
+          restore-keys: |
+            proof-swiftpm-${{ runner.os }}-${{ hashFiles('Package.resolved', 'Package.swift') }}-
+            proof-swiftpm-${{ runner.os }}-
+
+      - name: Build and package CodexBar.app (debug, ad-hoc signed) and the compat harness
+        run: |
+          set -eo pipefail
+          echo "Starting app build: $(date -u +%FT%TZ)"
+          CODEXBAR_SIGNING=adhoc CODEXBAR_PROOF_SKIP_WIDGET_EXTENSION=1 \
+            ./Scripts/package_app.sh debug 2>&1 | tee "$RUNNER_TEMP/build-package.log"
+          echo "Finished app build: $(date -u +%FT%TZ)"
+          echo "Starting compat harness build: $(date -u +%FT%TZ)"
+          swift build -c debug --product ProofPlanCompat 2>&1 | tee "$RUNNER_TEMP/build-compat.log"
+          echo "Finished compat harness build: $(date -u +%FT%TZ)"
+          echo "=== packaged app ==="
+          ls -la CodexBar.app/Contents/Helpers | head -20
+          echo "git commit: $(/usr/libexec/PlistBuddy -c 'Print :CodexGitCommit' CodexBar.app/Contents/Info.plist)"
+          echo "=== compat harness ==="
+          ls -la .build/debug/ProofPlanCompat
+          .build/debug/ProofPlanCompat 2>&1 | head -2 || true
+
+      - name: Ship-and-drive real hook deliveries and the compatibility harness
+        run: |
+          set +e
+          APP="$PWD/CodexBar.app"
+          CLI="$APP/Contents/Helpers/CodexBarCLI"
+          if [ ! -x "$CLI" ]; then CLI="$PWD/.build/debug/CodexBarCLI"; fi
+          HARNESS="$PWD/.build/debug/ProofPlanCompat"
+          OUT="$PWD/proof-out"
+          P=/tmp/codexbar-4800
+          mkdir -p "$OUT" "$P"
+          cp Proof/fake-codex "$P/fake-codex"
+          chmod +x "$P/fake-codex"
+          cp Proof/ProofPlanCompat/main.swift "$OUT/ProofPlanCompat-main.swift" 2>/dev/null
+          cp Proof/fake-codex "$OUT/fake-codex.sh" 2>/dev/null
+          cp Package.swift "$OUT/Package.swift" 2>/dev/null
+          cp .github/workflows/proof-4800-plan-hooks.yml "$OUT/workflow.yml" 2>/dev/null
+          git log --oneline -3 > "$OUT/git-head.txt"
+          git rev-parse HEAD >> "$OUT/git-head.txt"
+          failures=0
+
+          echo "=== shipped CLI identity ==="
+          echo "cli path: $CLI"
+          "$CLI" --version 2>&1 | tee "$OUT/cli-version.txt"
+          "$CLI" hooks --help 2>&1 | tee "$OUT/cli-hooks-help.txt" | head -40
+          "$CLI" usage --help 2>&1 | tee "$OUT/cli-usage-help.txt" | head -40
+
+          echo "=== download released v0.81.0 CLI for the compatibility payload ==="
+          OLD_DIR="$P/old-cli"
+          mkdir -p "$OLD_DIR"
+          curl -fsSL -o "$P/old-cli.tar.gz" \
+            "https://github.com/steipete/CodexBar/releases/download/v0.81.0/CodexBarCLI-v0.81.0-macos-arm64.tar.gz"
+          tar -xzf "$P/old-cli.tar.gz" -C "$OLD_DIR"
+          OLD_CLI=$(find "$OLD_DIR" -type f -name 'CodexBarCLI' -perm -111 | head -1)
+          echo "old cli path: $OLD_CLI"
+          "$OLD_CLI" --version 2>&1 | tee "$OUT/old-cli-version.txt"
+
+          echo "=== write proof configs (same config surface a user would have) ==="
+          python3 - "$P" "$OUT" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          proof_dir = pathlib.Path(sys.argv[1])
+          out_dir = pathlib.Path(sys.argv[2])
+
+          def write_config(path, case_name):
+              case_dir = out_dir / case_name
+              rule = {
+                  "id": "proof-usage-updated",
+                  "enabled": True,
+                  "event": "usage_updated",
+                  "provider": "codex",
+                  "executable": "/bin/sh",
+                  "arguments": [
+                      "-c",
+                      'cat > "%s/payload.json"; env | grep "^CODEXBAR_" | sort > "%s/env.txt"'
+                      % (case_dir, case_dir),
+                  ],
+                  "timeoutSeconds": 10,
+              }
+              config = {
+                  "version": 1,
+                  "providers": [{"id": "codex", "enabled": True, "source": "cli"}],
+                  "hooks": {"enabled": True, "events": [rule]},
+              }
+              path.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
+
+          write_config(out_dir / "config-plan.json", "plan")
+          write_config(out_dir / "config-absent.json", "absent")
+          (out_dir / "config-old-cli.json").write_text(
+              json.dumps(
+                  {"version": 1, "providers": [{"id": "codex", "enabled": True, "source": "cli"}]},
+                  indent=2,
+              )
+              + "\n",
+              encoding="utf-8",
+          )
+          print("configs written")
+          PY
+
+          run_case() {
+            local case_name="$1" config="$2" mode="$3"
+            local casedir="$OUT/$case_name"
+            mkdir -p "$casedir"
+            echo "$mode" > "$P/mode"
+            local home="$P/home-$case_name"
+            rm -rf "$home"; mkdir -p "$home"
+            HOME="$home" CODEXBAR_CONFIG="$config" CODEX_CLI_PATH="$P/fake-codex" \
+              "$CLI" hooks watch --provider codex --interval 60 --verbose > "$casedir/cli.log" 2>&1 &
+            local pid=$!
+            for _ in $(seq 1 300); do
+              [ -f "$casedir/payload.json" ] && break
+              kill -0 "$pid" 2>/dev/null || break
+              sleep 0.5
+            done
+            sleep 1
+            kill -INT "$pid" 2>/dev/null
+            for _ in $(seq 1 20); do kill -0 "$pid" 2>/dev/null || break; sleep 0.25; done
+            kill -9 "$pid" 2>/dev/null
+            wait "$pid" 2>/dev/null
+            echo "===== shipped CLI case: $case_name ====="
+            cat "$casedir/cli.log"
+            echo "----- hook payload.json -----"
+            cat "$casedir/payload.json" 2>/dev/null
+            echo
+            echo "----- hook CODEXBAR_* env -----"
+            cat "$casedir/env.txt" 2>/dev/null
+            echo
+          }
+
+          echo "=== case A: plan observation present (fake app-server reports plan_type pro) ==="
+          run_case plan "$OUT/config-plan.json" plan
+          echo "=== case B: plan observation absent (no plan_type; API-key account) ==="
+          run_case absent "$OUT/config-absent.json" absent
+
+          echo "=== assert real hook deliveries ==="
+          python3 - "$OUT" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          out = pathlib.Path(sys.argv[1])
+          failures = []
+
+          def read_json(path):
+              try:
+                  return json.loads(path.read_text(encoding="utf-8"))
+              except Exception as error:  # noqa: BLE001
+                  failures.append(f"{path}: {error}")
+                  return {}
+
+          plan = read_json(out / "plan" / "payload.json")
+          plan_env = (out / "plan" / "env.txt").read_text(encoding="utf-8") if (out / "plan" / "env.txt").exists() else ""
+          absent = read_json(out / "absent" / "payload.json")
+          absent_env = (
+              (out / "absent" / "env.txt").read_text(encoding="utf-8")
+              if (out / "absent" / "env.txt").exists()
+              else ""
+          )
+
+          checks = {
+              "plan event is usage_updated": plan.get("event") == "usage_updated",
+              "plan provider is codex": plan.get("provider") == "codex",
+              "plan == pro": plan.get("plan") == "pro",
+              "planSource == local_rpc": plan.get("planSource") == "local_rpc",
+              "planObservedAt is ISO8601 UTC": isinstance(plan.get("planObservedAt"), str)
+              and plan["planObservedAt"].endswith("Z"),
+              "env CODEXBAR_PLAN=pro": "CODEXBAR_PLAN=pro" in plan_env,
+              "env CODEXBAR_PLAN_SOURCE=local_rpc": "CODEXBAR_PLAN_SOURCE=local_rpc" in plan_env,
+              "env CODEXBAR_PLAN_OBSERVED_AT set": "CODEXBAR_PLAN_OBSERVED_AT=" in plan_env,
+              "absent event is usage_updated": absent.get("event") == "usage_updated",
+              "absent omits plan": "plan" not in absent,
+              "absent omits planSource": "planSource" not in absent,
+              "absent omits planObservedAt": "planObservedAt" not in absent,
+              "absent env omits CODEXBAR_PLAN": "CODEXBAR_PLAN" not in absent_env,
+          }
+          for name, ok in checks.items():
+              print(("PASS " if ok else "FAIL ") + name)
+              if not ok:
+                  failures.append(name)
+          report = {
+              "plan.payload": plan,
+              "plan.envKeys": sorted(line.split("=", 1)[0] for line in plan_env.splitlines() if "=" in line),
+              "absent.payload": absent,
+              "absent.envKeys": sorted(line.split("=", 1)[0] for line in absent_env.splitlines() if "=" in line),
+              "checks": checks,
+          }
+          (out / "hook-assertions.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(report, indent=2))
+          sys.exit(1 if failures else 0)
+          PY
+          hook_rc=$?
+          [ "$hook_rc" -eq 0 ] || failures=$((failures + 1))
+
+          echo "=== new-build CLI usage JSON (same snapshot model the hook is built from) ==="
+          for mode in plan absent; do
+            echo "$mode" > "$P/mode"
+            HOME="$P/home-usage-$mode" CODEXBAR_CONFIG="$OUT/config-$mode.json" CODEX_CLI_PATH="$P/fake-codex" \
+              "$CLI" usage --provider codex --format json > "$OUT/new-cli-usage-$mode.json" 2> "$OUT/new-cli-usage-$mode.err"
+            echo "----- new CLI usage ($mode) -----"
+            cat "$OUT/new-cli-usage-$mode.json"
+            cat "$OUT/new-cli-usage-$mode.err"
+          done
+
+          echo "=== released v0.81.0 build writes the old-format usage payload ==="
+          echo plan > "$P/mode"
+          HOME="$P/home-old" CODEXBAR_CONFIG="$OUT/config-old-cli.json" CODEX_CLI_PATH="$P/fake-codex" \
+            "$OLD_CLI" usage --provider codex --format json > "$OUT/old-cli-usage.json" 2> "$OUT/old-cli-usage.err"
+          old_rc=$?
+          echo "old cli exit=$old_rc"
+          echo "----- v0.81.0 CLI usage payload -----"
+          cat "$OUT/old-cli-usage.json"
+          echo "----- v0.81.0 CLI stderr -----"
+          cat "$OUT/old-cli-usage.err"
+
+          echo "=== data-model compatibility harness over the released payload ==="
+          "$HARNESS" "$OUT/old-cli-usage.json" > "$OUT/compat-report.json" 2> "$OUT/compat-report.err"
+          compat_rc=$?
+          cat "$OUT/compat-report.json"
+          cat "$OUT/compat-report.err"
+          echo "compat harness exit=$compat_rc"
+          [ "$old_rc" -eq 0 ] || failures=$((failures + 1))
+          [ "$compat_rc" -eq 0 ] || failures=$((failures + 1))
+
+          grep -q '"plan"' "$OUT/plan/payload.json" 2>/dev/null || echo "WARN: plan payload files missing"
+          grep -q '"planObservation"' "$OUT/new-cli-usage-plan.json" || echo "WARN: new CLI usage JSON missing planObservation"
+          grep -q '"local_rpc"' "$OUT/new-cli-usage-plan.json" || echo "WARN: new CLI usage JSON missing local_rpc source"
+          grep -q '"planObservation"' "$OUT/new-cli-usage-absent.json" && echo "WARN: absent usage JSON unexpectedly has planObservation"
+
+          ls -la "$OUT"
+          echo "failures=$failures"
+          if [ "$failures" -ne 0 ]; then
+            echo "PROOF CAPTURE INCOMPLETE"
+            exit 1
+          fi
+          echo "PROOF CAPTURE OK"
+
+      - name: Collect diagnostics
+        if: always()
+        run: |
+          set +e
+          mkdir -p proof-out
+          cp "$RUNNER_TEMP/build-package.log" proof-out/ 2>/dev/null
+          cp "$RUNNER_TEMP/build-compat.log" proof-out/ 2>/dev/null
+          cp -R /tmp/codexbar-4800 proof-out/proof-dir 2>/dev/null
+          true
+
+      - name: Upload proof artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-proof-4800-plan-hooks
+          path: proof-out
+          if-no-files-found: warn

@@ -1,0 +1,45 @@
+CodexBar 0.82.1
+
+Usage:
+  codexbar usage [--format text|json|toon]
+               [--json]
+               [--json-only]
+               [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
+               [--provider codex|openai|azure-openai|claude|clinepass|cursor|opencode|opencodego|alibaba-coding-plan|alibaba-token-plan|qwen-cloud|factory|fireworks|gemini|antigravity|copilot|devin|zai|minimax|manus|kimi|kilo|kiro|vertexai|augment|jetbrains|moonshot|amp|t3chat|langdock|ollama|synthetic|openrouter|elevenlabs|warp|windsurf|zed|perplexity|mimo|doubao|sakana|abacusai|mistral|deepseek|deepinfra|codebuff|venice|commandcode|qoder|stepfun|bedrock|grok|groqcloud|llmproxy|litellm|bifrost|aixy|deepgram|soniox|poe|chutes|neuralwatt|helmcode|clawrouter|longcat|sub2api|wayfinder|zenmux|aiand|zoommate|xai|xapi|notion|ibmbob|nous|muse|coderabbit|replicate|huggingface|raycast|pi|v0|typesafe|hyper|gitkraken|futureagi|devpass|atlascloud|vercel|llmman|xkiro|museai|lithosai|workbuddy|tavily|linkup|tinyapi|exa|cosmic|aerostack|sailresearch|sofya|fal|flora|parallel|claudeplatform|munito|traecn|chatbox|abliteration|both|all]
+               [--account <label>] [--account-index <index>] [--all-accounts]
+               [--no-credits] [--no-color] [--pretty] [--status] [--source <auto|web|cli|oauth|api>]
+               [--web-timeout <seconds>] [--web-debug-dump-html] [--antigravity-plan-debug] [--augment-debug]
+
+Description:
+  Print usage from enabled providers as text (default), JSON, or TOON. Honors your in-app toggles.
+  Output format: use --json (or --format json) for JSON on stdout; use --json-output for JSON logs on stderr.
+  --format toon emits the same payload as --format json, rendered as TOON (github.com/toon-format/spec)
+  for token-cheaper agent consumption.
+  Source behavior is provider-specific:
+  - Codex: OpenAI web dashboard (usage limits, credits remaining, code review remaining, usage breakdown).
+    Auto falls back to Codex CLI only when cookies are missing.
+  - Claude: claude.ai API.
+  - Kilo: app.kilo.ai API.
+    Auto falls back to Kilo CLI when API credentials are missing or unauthorized.
+  Token accounts are loaded from the resolved CodexBar config file.
+  Use --account or --account-index to select a specific token account.
+  Use --all-accounts to fetch every token account, or every visible Codex account for Codex.
+  Account selection requires a single provider.
+
+Global flags:
+  -h, --help      Show help
+  -V, --version   Show version
+  -v, --verbose   Enable verbose logging
+  --no-color      Disable ANSI colors in text output
+  --log-level <trace|verbose|debug|info|warning|error|critical>
+  --json-output   Emit machine-readable logs (JSONL) to stderr
+
+Examples:
+  codexbar usage
+  codexbar usage --provider claude
+  codexbar usage --provider gemini
+  codexbar usage --format json --provider all --pretty
+  codexbar usage --provider all --json
+  codexbar usage --status
+  codexbar usage --provider codex --source web --format json --pretty
+  codexbar usage --format toon --provider claude

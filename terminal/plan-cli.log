@@ -1,0 +1,8 @@
+2026-10-27T06:58:07+0000 debug com.steipete.codexbar.codex-rpc: binary=/tmp/codexbar-4800/fake-codex [CodexBarCore] Codex RPC started
+2026-10-27T06:58:07+0000 debug com.steipete.codexbar.codex-rpc: [CodexBarCore] Codex RPC stopping
+2026-10-27T06:58:07+0000 debug com.steipete.codexbar.subprocess: binary=sh label=hook usage_updated timeout=10.0 [CodexBarCore] Subprocess start
+2026-10-27T06:58:07+0000 debug com.steipete.codexbar.subprocess: binary=sh duration_ms=24 label=hook usage_updated status=0 [CodexBarCore] Subprocess exit
+2026-10-27T06:58:07+0000 info com.steipete.codexbar.hooks: event=usage_updated provider=codex [CodexBarCore] ran hook
+Watching 1 provider(s) every 60s: codex
+Press Ctrl-C to stop.
+usage_updated codex usage=12%

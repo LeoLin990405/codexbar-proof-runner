@@ -1,0 +1,4 @@
+84587cf83 chore(proof): drive shipped CLI hook plan provenance and decode released v0.81.0 payload
+a67d8017f feat(hooks): expose sampled raw plan provenance on usage_updated (#4775)
+70a3e17d3 feat(codex): retain raw plan provenance on usage snapshots (#4775)
+84587cf832610da45a387eaf3ccc3b1c6ef58046

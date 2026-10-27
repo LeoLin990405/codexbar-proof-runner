@@ -1,0 +1,1 @@
+{"account":"proof-runner@example.com","event":"usage_updated","plan":"pro","planObservedAt":"2026-10-27T06:58:07Z","planSource":"local_rpc","provider":"codex","resetAt":"2026-10-27T07:58:07Z","secondaryResetAt":"2026-10-28T06:58:07Z","secondaryUsagePercent":0.4,"secondaryWindowMinutes":10080,"timestamp":"2026-10-27T06:58:07Z","usagePercent":0.125,"windowMinutes":300}
