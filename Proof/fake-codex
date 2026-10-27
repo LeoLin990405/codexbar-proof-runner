@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+"""FORK-ONLY PROOF: fake `codex` app-server used by the PR #4800 shipped-CLI proof.
+
+Speaks the minimal newline-delimited JSON-RPC that CodexBar's CodexRPCClient expects.
+Reads the response profile from /tmp/codexbar-4800/mode:
+  - plan   : rate limits carry planType "pro"; account/read reports a ChatGPT account with planType "pro"
+  - absent : rate limits omit planType; account/read reports an API-key account (no plan)
+Never intended for upstream; only used by the scratch-repo proof workflow.
+"""
+
+import json
+import pathlib
+import sys
+import time
+
+MODE_FILE = pathlib.Path("/tmp/codexbar-4800/mode")
+
+
+def read_mode() -> str:
+    try:
+        value = MODE_FILE.read_text(encoding="utf-8").strip()
+    except OSError:
+        value = "plan"
+    return value if value in {"plan", "absent"} else "plan"
+
+
+def result(message_id, payload):
+    print(json.dumps({"id": message_id, "result": payload}), flush=True)
+
+
+def rate_limits(mode: str):
+    now = int(time.time())
+    primary = {"usedPercent": 12.5, "windowDurationMins": 300, "resetsAt": now + 3600}
+    secondary = {"usedPercent": 40.0, "windowDurationMins": 10080, "resetsAt": now + 86400}
+    snapshot = {"primary": primary, "secondary": secondary}
+    if mode == "plan":
+        snapshot["planType"] = "pro"
+    return {"rateLimits": snapshot, "rateLimitsByLimitId": {"codex": snapshot}}
+
+
+def account(mode: str):
+    if mode == "plan":
+        details = {"type": "chatgpt", "email": "proof-runner@example.com", "planType": "pro"}
+    else:
+        details = {"type": "apikey"}
+    return {"account": details, "requiresOpenaiAuth": False}
+
+
+def main() -> int:
+    for raw in sys.stdin:
+        line = raw.strip()
+        if not line:
+            continue
+        try:
+            message = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if "id" not in message:
+            # Notification (e.g. {"method":"initialized","params":{}}) — no reply.
+            continue
+        message_id = message["id"]
+        method = message.get("method")
+        mode = read_mode()
+        if method == "initialize":
+            result(message_id, {"userAgent": "fake-codex-proof/0.0"})
+        elif method == "account/rateLimits/read":
+            result(message_id, rate_limits(mode))
+        elif method == "account/read":
+            result(message_id, account(mode))
+        else:
+            print(
+                json.dumps({"id": message_id, "error": {"code": -32601, "message": "method not found"}}),
+                flush=True,
+            )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

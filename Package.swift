@@ -30,6 +30,8 @@ let package = Package(
             .executable(name: "CodexBarCLI", targets: ["CodexBarCLI"]),
             // Offline adaptive-refresh replay harness. Keep the supporting library package-internal.
             .executable(name: "AdaptiveReplayCLI", targets: ["AdaptiveReplayCLI"]),
+            // FORK-ONLY PROOF: compatibility harness for PR #4800 (proof branches only).
+            .executable(name: "ProofPlanCompat", targets: ["ProofPlanCompat"]),
         ]
 
         #if os(macOS)
@@ -104,6 +106,15 @@ let package = Package(
                 linkerSettings: sqlite3LinkerSettings + [
                     // musl's default thread stack is too small for synchronous Swift cost scans.
                     .unsafeFlags(["-Xlinker", "-z", "-Xlinker", "stack-size=8388608"], .when(platforms: [.linux])),
+                ]),
+            // FORK-ONLY PROOF: decodes a released v0.81.0 CLI usage payload through the new build's
+            // Codable model (see Proof/ProofPlanCompat and the proof-4800 workflow). Not shipped.
+            .executableTarget(
+                name: "ProofPlanCompat",
+                dependencies: ["CodexBarCore"],
+                path: "Proof/ProofPlanCompat",
+                swiftSettings: [
+                    .enableUpcomingFeature("StrictConcurrency"),
                 ]),
             // Crash-test subprocess: tests SIGKILL it mid-save to prove the cost store's
             // save cycle is atomic. Not shipped; built only as a test dependency.
