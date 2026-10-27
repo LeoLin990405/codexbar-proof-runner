@@ -1,0 +1,75 @@
+# Focused macOS proof for steipete/CodexBar PR #4800 (issue #4775).
+#
+# Fork CI is disabled, so this scratch repo runs the PR head from the public CodexBar fork on a
+# GitHub-hosted macOS 26 runner and executes the focused provenance + hook-mapping suites.
+name: proof-4775-hook-plan
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: proof-4775-hook-plan
+  cancel-in-progress: true
+
+jobs:
+  focused:
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - name: Toolchain fact sheet
+        run: |
+          set -euo pipefail
+          sw_vers
+          xcodebuild -version
+          swift --version
+
+      - name: Check out PR head
+        run: |
+          set -euo pipefail
+          git init workspace
+          cd workspace
+          git remote add origin https://github.com/LeoLin990405/CodexBar.git
+          git fetch --depth 1 origin feat/4775-hook-plan-observations
+          git checkout -q FETCH_HEAD
+          echo "HEAD=$(git rev-parse HEAD)"
+          git log --oneline -3
+
+      - name: Restore SwiftPM build cache
+        uses: actions/cache@v4
+        with:
+          path: workspace/.build
+          key: proof-swiftpm-${{ runner.os }}-${{ hashFiles('Package.resolved', 'Package.swift') }}-v1
+          restore-keys: |
+            proof-swiftpm-${{ runner.os }}-
+
+      - name: Focused provenance and hook-mapping tests
+        working-directory: workspace
+        run: |
+          set -uo pipefail
+          source ./Scripts/test_environment.sh
+          set +e
+          swift test --filter "CodexOAuthTests|CodexPATTests|UsageUpdatedHookTests|UsageUpdatedHookMappingTests|ProviderPlanObservationTests|CodexCLIWindowNormalizationTests" \
+            2>&1 | tee "${GITHUB_WORKSPACE}/focused-tests.log"
+          status=${PIPESTATUS[0]}
+          set -e
+          echo "FOCUSED_TEST_EXIT=${status}"
+          grep -E "Test run with|Suite .* (passed|failed)" "${GITHUB_WORKSPACE}/focused-tests.log" | tail -12 || true
+          if [[ "${status}" -ne 0 ]]; then
+            echo "FOCUSED_TESTS_FAILED"
+            exit 1
+          fi
+          echo "FOCUSED_TESTS_PASSED"
+
+      - name: Summarize proof
+        if: ${{ always() }}
+        run: |
+          {
+            printf '### #4775 focused macOS proof\n\n'
+            printf '| Field | Value |\n| --- | --- |\n'
+            printf '| Runner | `%s` |\n' "${RUNNER_NAME:-unknown}"
+            printf '| PR | https://github.com/steipete/CodexBar/pull/4800 |\n'
+            printf '| Suites | CodexOAuthTests, CodexPATTests, CodexCLIWindowNormalizationTests, UsageUpdatedHookTests, UsageUpdatedHookMappingTests, ProviderPlanObservationTests |\n'
+          } >> "$GITHUB_STEP_SUMMARY"
